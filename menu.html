@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEFI - Panel de Control</title>
+    <style>
+        :root {
+            --azul-marino: #0B192C;
+            --azul-principal: #1E3A8A;
+            --azul-brillante: #2563EB;
+            --azul-suave: #EFF6FF;
+            --blanco: #FFFFFF;
+            --gris-fondo: #F8FAFC;
+            --borde: #E2E8F0;
+            --texto-oscuro: #1E293B;
+            --texto-mutado: #64748B;
+            --verde-exito: #10B981;
+            --naranja-alerta: #F59E0B;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gris-fondo);
+            color: var(--texto-oscuro);
+            min-height: 100vh;
+        }
+
+        /* --- NAVBAR SUPERIOR --- */
+        .navbar {
+            background-color: var(--azul-marino);
+            color: var(--blanco);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-brand h2 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+            color: var(--blanco);
+        }
+
+        .navbar-brand span {
+            font-size: 0.8rem;
+            background-color: var(--azul-brillante);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            height: 100%;
+            align-items: center;
+        }
+
+        .nav-item a {
+            color: #94A3B8;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item a:hover, .nav-item.active a {
+            color: var(--blanco);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 1px solid #1E293B;
+            padding-left: 1.5rem;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: #94A3B8;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .main-container {
+            max-width: 1280px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* --- TARJETAS METRICAS (KPIs) --- */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background-color: var(--blanco);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1.5px solid var(--borde);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .metric-details h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--texto-mutado);
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--azul-marino);
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .icon-total { background-color: var(--azul-suave); color: var(--azul-brillante); }
+        .icon-fed { background-color: #ECFDF5; color: var(--verde-exito); }
+        .icon-est { background-color: #FFFBEB; color: var(--naranja-alerta); }
+
+        /* --- SECCIONES DINÁMICAS --- */
+        .section-panel {
+            background-color: var(--blanco);
+            border-radius: 12px;
+            border: 1.5px solid var(--borde);
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: none; /* Se controlará con JS */
+        }
+
+        .section-panel.active-panel {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gris-fondo);
+            padding-bottom: 1rem;
+        }
+
+        .panel-title {
+            font-size: 1.4rem;
+            color: var(--azul-principal);
+            font-weight: 700;
+        }
+
+        /* --- FORMULARIO DE REGISTRO --- */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--texto-oscuro);
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px;
+            border: 1.5px solid var(--borde);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background-color: var(--gris-fondo);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--azul-brillante);
+            background-color: var(--blanco);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-submit {
+            grid-column: 1 / -1;
+            background-color: var(--azul-principal);
+            color: var(--blanco);
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--azul-brillante);
+        }
+
+        /* --- TABLA DE AUDITORIAS (CONSULTA / MODIFICACIÓN) --- */
+        .table-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1.5px solid var(--borde);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: var(--azul-suave);
+            color: var(--azul-principal);
+            padding: 12px 16px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--borde);
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--borde);
+            color: var(--texto-oscuro);
+        }
+
+        tr:hover {
+            background-color: rgba(239, 246, 255, 0.4);
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-federal { background-color: #D1FAE5; color: #065F46; }
+        .badge-estatal { background-color: #FEF3C7; color: #92400E; }
+        
+        .badge-status { background-color: #E2E8F0; color: #475569; }
+        .badge-status.proceso { background-color: #DBEAFE; color: #1E40AF; }
+        .badge-status.concluido { background-color: #D1FAE5; color: #065F46; }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background-color: var(--azul-suave);
+            color: var(--azul-principal);
+        }
+
+        .btn-edit:hover {
+            background-color: var(--azul-principal);
+            color: var(--blanco);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR SUPERIOR INTERACTIVO -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <h2>SEFI</h2>
+            <span>SISTEMA AUDITOR</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item active" id="menu-consultar"><a href="#" onclick="switchPanel('consultar')">Consultar Auditorías</a></li>
+            <li class="nav-item" id="menu-registrar"><a href="#" onclick="switchPanel('registrar')">Registrar Auditoría</a></li>
+            <li class="nav-item" id="menu-modificar"><a href="#" onclick="switchPanel('modificar')">Modificar Auditoría</a></li>
+        </ul>
+
+        <div class="user-profile">
+            <div class="user-info">
+                <div class="user-name" id="profile-name">Cargando...</div>
+                <div class="user-role" id="profile-role">Auditor General</div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <!-- DASHBOARD METRICAS -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-details">
+                    <h3>Total Auditorías</h3>
+                    <div class="metric-value" id="count-total">0</div>
+                </div>
+                <div class="metric-icon icon-total">Σ</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-details">
+                    <h3>Federales</h3>
+                    <div class="metric-value" id="count-fed">0</div>
+                </div>
+                <div class="metric-icon icon-fed">F</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-details">
+                    <h3>Estatales</h3>
+                    <div class="metric-value" id="count-est">0</div>
+                </div>
+                <div class="metric-icon icon-est">E</div>
+            </div>
+        </div>
+
+        <!-- 1. PANEL: CONSULTAR AUDITORÍAS (POR DEFECTO) -->
+        <section id="panel-consultar" class="section-panel active-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Listado General de Auditorías</h2>
+                <div class="table-filters">
+                    <label for="filter-origen">Filtrar Origen:</label>
+                    <select id="filter-origen" onchange="applyFilters()">
+                        <option value="todos">Todos</option>
+                        <option value="Federal">Federales</option>
+                        <option value="Estatal">Estatales</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No. Oficio / Clave</th>
+                            <th>Entidad Fiscalizada</th>
+                            <th>Tipo / Origen</th>
+                            <th>Ejercicio</th>
+                            <th>Monto Observado</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body-consultar">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 2. PANEL: REGISTRAR AUDITORÍA -->
+        <section id="panel-registrar" class="section-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Registrar Nueva Auditoría</h2>
+            </div>
+            <form id="auditForm" onsubmit="saveNewAudit(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="clave">No. de Oficio / Clave de Auditoría:</label>
+                        <input type="text" id="clave" required placeholder="Ej: AS-2026-FED-01">
+                    </div>
+                    <div class="form-group">
+                        <label for="entidad">Entidad Fiscalizada (Municipio / Dependencia):</label>
+                        <input type="text" id="entidad" required placeholder="Ej: Municipio de Guanajuato">
+                    </div>
+                    <div class="form-group">
+                        <label for="origen">Origen de Fondos:</label>
+                        <select id="origen" required>
+                            <option value="Federal">Federal</option>
+                            <option value="Estatal">Estatal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ejercicio">Ejercicio Fiscal:</label>
+                        <input type="number" id="ejercicio" required min="2020" max="2027" value="2026">
+                    </div>
+                    <div class="form-group">
+                        <label for="monto">Monto Observado (MXN):</label>
+                        <input type="number" id="monto" required min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado Inicial:</label>
+                        <select id="estado" required>
+                            <option value="En Proceso">En Proceso</option>
+                            <option value="Concluido">Concluido</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit">Dar de Alta Auditoría</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- 3. PANEL: MODIFICAR AUDITORÍA -->
+        <section id="panel-modificar" class="section-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Modificar o Editar Auditorías Existentes</h2>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No. Oficio / Clave</th>
+                            <th>Entidad Fiscalizada</th>
+                            <th>Tipo Origen</th>
+                            <th>Ejercicio</th>
+                            <th>Estado</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body-modificar">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // BASE DE DATOS LOCAL INICIAL (Auditorías Federales y Estatales de prueba)
+        let auditorias = [
+            { clave: "AS-2026-FED-01", entidad: "San Miguel de Allende (FISMDF)", origen: "Federal", ejercicio: 2025, monto: 14250000.00, estado: "En Proceso" },
+            { clave: "AS-2026-EST-04", entidad: "Secretaría de Obra Pública Gto", origen: "Estatal", ejercicio: 2025, monto: 8540300.50, estado: "Concluido" },
+            { clave: "AS-2026-FED-02", entidad: "Municipio de Celaya (FORTAMUN)", origen: "Federal", ejercicio: 2024, monto: 23110200.00, estado: "En Proceso" },
+            { clave: "AS-2026-EST-12", entidad: "SAPAL León (Infraestructura)", origen: "Estatal", ejercicio: 2025, monto: 4200150.00, estado: "En Proceso" }
+        ];
+
+        // Al iniciar la página
+        window.onload = function() {
+            // Leer datos del perfil cargados por el login de SEFI
+            const userName = localStorage.getItem('sefi_user_name') || 'Auditor Invitado';
+            const userPuesto = localStorage.getItem('sefi_user_puesto') || 'Área de Control';
+            
+            document.getElementById('profile-name').textContent = userName;
+            document.getElementById('profile-role').textContent = userPuesto;
+
+            // Cargar datos en las tablas e indicadores
+            updateDashboard();
+            renderTables();
+        }
+
+        // Función para cambiar de pestaña en el menú superior
+        function switchPanel(panelId) {
+            // Remover estado activo de todo el menú
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            // Ocultar todas las secciones
+            document.querySelectorAll('.section-panel').forEach(panel => panel.classList.remove('active-panel'));
+
+            // Activar el menú e item seleccionado
+            document.getElementById(`menu-${panelId}`).classList.add('active');
+            document.getElementById(`panel-${panelId}`).classList.add('active-panel');
+        }
+
+        // Calcular e inyectar valores en los KPI dinámicos
+        function updateDashboard() {
+            const total = auditorias.length;
+            const federales = auditorias.filter(a => a.origen === 'Federal').length;
+            const estatales = auditorias.filter(a => a.origen === 'Estatal').length;
+
+            document.getElementById('count-total').textContent = total;
+            document.getElementById('count-fed').textContent = federales;
+            document.getElementById('count-est').textContent = estatales;
+        }
+
+        // Renderizar las tablas en base a los datos cargados
+        function renderTables(filter = 'todos') {
+            const tbodyConsultar = document.getElementById('table-body-consultar');
+            const tbodyModificar = document.getElementById('table-body-modificar');
+            
+            tbodyConsultar.innerHTML = '';
+            tbodyModificar.innerHTML = '';
+
+            const dataFiltrada = filter === 'todos' ? auditorias : auditorias.filter(a => a.origen === filter);
+
+            dataFiltrada.forEach((aud, index) => {
+                const badgeOrigen = aud.origen === 'Federal' ? 'badge-federal' : 'badge-estatal';
+                const statusClass = aud.estado === 'En Proceso' ? 'proceso' : 'concluido';
+                const montoFormateado = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(aud.monto);
+
+                // Fila para tabla Consulta
+                const filaConsulta = `
+                    <tr>
+                        <td><strong>${aud.clave}</strong></td>
+                        <td>${aud.entidad}</td>
+                        <td><span class="badge ${badgeOrigen}">${aud.origen}</span></td>
+                        <td>${aud.ejercicio}</td>
+                        <td><strong>${montoFormateado}</strong></td>
+                        <td><span class="badge badge-status ${statusClass}">${aud.estado}</span></td>
+                    </tr>
+                `;
+                tbodyConsultar.innerHTML += filaConsulta;
+
+                // Fila para tabla Modificar (con acción interactiva)
+                const filaModificar = `
+                    <tr>
+                        <td><strong>${aud.clave}</strong></td>
+                        <td>${aud.entidad}</td>
+                        <td><span class="badge ${badgeOrigen}">${aud.origen}</span></td>
+                        <td>${aud.ejercicio}</td>
+                        <td><span class="badge badge-status ${statusClass}">${aud.estado}</span></td>
+                        <td><button class="btn-action btn-edit" onclick="toggleStatus(${index})">Alternar Estado</button></td>
+                    </tr>
+                `;
+                tbodyModificar.innerHTML += filaModificar;
+            });
+        }
+
+        // Aplicar filtros en tiempo real
+        function applyFilters() {
+            const selectedVal = document.getElementById('filter-origen').value;
+            renderTables(selectedVal);
+        }
+
+        // Guardar nueva auditoría (acción del formulario)
+        function saveNewAudit(event) {
+            event.preventDefault();
+
+            const nuevaAud = {
+                clave: document.getElementById('clave').value,
+                entidad: document.getElementById('entidad').value,
+                origen: document.getElementById('origen').value,
+                ejercicio: parseInt(document.getElementById('ejercicio').value),
+                monto: parseFloat(document.getElementById('monto').value),
+                estado: document.getElementById('estado').value
+            };
+
+            // Insertar al arreglo local
+            auditorias.push(nuevaAud);
+
+            // Actualizar vistas
+            updateDashboard();
+            renderTables();
+            document.getElementById('auditForm').reset();
+
+            alert('¡Auditoría agregada exitosamente al sistema!');
+            switchPanel('consultar'); // Redirige automáticamente
+        }
+
+        // Alternar el estado (En proceso / Concluido) interactivo en la pestaña de Modificar
+        function toggleStatus(index) {
+            const actual = auditorias[index].estado;
+            auditorias[index].estado = actual === 'En Proceso' ? 'Concluido' : 'En Proceso';
+            
+            renderTables();
+            updateDashboard();
+            alert(`Estado actualizado para la auditoría con clave: ${auditorias[index].clave}`);
+        }
+    </script>
+</body>
+</html>
