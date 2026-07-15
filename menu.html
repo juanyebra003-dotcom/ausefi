@@ -438,10 +438,20 @@
             justify-content: space-between;
             align-items: center;
             font-weight: 800;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             letter-spacing: 1px;
             color: var(--azul-brillante);
             margin-bottom: 6px;
+        }
+
+        .toast-content-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .toast-icon {
+            font-size: 2rem;
         }
 
         .toast-close {
@@ -453,7 +463,7 @@
             line-height: 1;
         }
 
-        /* --- POST-ITS SUPERPUESTOS --- */
+        /* --- POST-ITS SUPERPUESTOS CON PRIORIDADES --- */
         .postit-overlay-container {
             position: fixed;
             bottom: 20px;
@@ -469,15 +479,31 @@
         .postit-real {
             pointer-events: auto;
             width: 290px;
-            background: linear-gradient(135deg, #ffffcc 0%, #fefe96 100%);
-            color: #33301C;
             padding: 18px;
             position: relative;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0,0,0,0.1);
             transform: rotate(-1.5deg);
             transition: all 0.3s ease;
-            border-left: 4px solid #FBC02D;
             border-bottom-right-radius: 40px 10px;
+        }
+
+        /* Variaciones de colores de Post-it según Prioridad */
+        .postit-urgente {
+            background: linear-gradient(135deg, #FFE4E6 0%, #FECDD3 100%);
+            color: #9F1239;
+            border-left: 5px solid #F43F5E;
+        }
+
+        .postit-prioritario {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            color: #92400E;
+            border-left: 5px solid #F59E0B;
+        }
+
+        .postit-normal {
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+            color: #065F46;
+            border-left: 5px solid #10B981;
         }
 
         .postit-real::before {
@@ -491,11 +517,30 @@
             transform: rotate(-2deg);
         }
 
+        .postit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+            padding-bottom: 4px;
+        }
+
         .postit-body {
             font-size: 0.8rem;
             line-height: 1.4;
             margin-bottom: 12px;
             font-weight: 500;
+        }
+
+        .postit-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 5px;
         }
 
         /* --- FORMULARIOS --- */
@@ -772,7 +817,7 @@
     </div>
 
     <script>
-        // BASE DE DATOS LOCAL AMPLIADA CON LOS CAMPOS DE SUPERVISIÓN, ÁREAS RESPONSABLES, ENTES FISCALIZADORES Y FECHAS
+        // BASE DE DATOS LOCAL
         let auditorias = [
             { 
                 clave: "AS-2026-FED-01", 
@@ -847,24 +892,6 @@
                 rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
             },
             { 
-                clave: "AS-2026-FED-03", 
-                entidad: "Salud Pública Gto (Medicamentos)", 
-                origen: "Federal", 
-                fiscalizadora: "ASF",
-                jefe_auditoria: "Lic. Fernando Solano Ortiz",
-                fecha_inicio: "2026-02-18",
-                ejercicio: 2025, 
-                responsable: "Dra. Sofía Alcocer",
-                area: "Almacén Central y Farmacología",
-                areas_responsables: ["Dirección de Adquisiciones", "Jefatura de Distribución", "Recursos Financieros"],
-                asociado: 120000000.00,
-                observado: 18500000.00, 
-                solventado: 14000000.00,
-                reintegrado: 500000.00,
-                estado: "En Proceso",
-                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
-            },
-            { 
                 clave: "AS-2026-EST-05", 
                 entidad: "Instituto de Pensiones del Estado", 
                 origen: "Estatal", 
@@ -881,169 +908,25 @@
                 reintegrado: 200000.00,
                 estado: "En Proceso",
                 rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
-            },
-            { 
-                clave: "AS-2026-FED-04", 
-                entidad: "Obra Pública Municipal Irapuato", 
-                origen: "Federal", 
-                fiscalizadora: "ASF",
-                jefe_auditoria: "Ing. Jorge Villaseñor",
-                fecha_inicio: "2026-03-22",
-                ejercicio: 2025, 
-                responsable: "Ing. Alejandro Torres",
-                area: "Fondo de Aportaciones Municipales",
-                areas_responsables: ["Dirección de Obra", "Supervisión de Contratos", "Finanzas Municipales"],
-                asociado: 45000000.00,
-                observado: 12300000.00, 
-                solventado: 4000000.00,
-                reintegrado: 1000000.00,
-                estado: "En Proceso",
-                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
-            },
-            { 
-                clave: "AS-2026-EST-06", 
-                entidad: "Secretaría de Finanzas (Arrendamientos)", 
-                origen: "Estatal", 
-                fiscalizadora: "Sec. Honestidad",
-                jefe_auditoria: "Lic. Beatriz Palacios",
-                fecha_inicio: "2026-01-20",
-                ejercicio: 2024, 
-                responsable: "C.P. Mario G. Domínguez",
-                area: "Servicios Generales y Patrimonio",
-                areas_responsables: ["Control Patrimonial", "Dirección Legal", "Recursos Materiales"],
-                asociado: 28000000.00,
-                observado: 3450000.00, 
-                solventado: 3450000.00,
-                reintegrado: 0.00,
-                estado: "Concluido",
-                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
-            },
-            { 
-                clave: "AS-2026-FED-05", 
-                entidad: "Seguridad Pública León (Subsidios)", 
-                origen: "Federal", 
-                fiscalizadora: "SFP",
-                jefe_auditoria: "Mtro. Salvador Corona",
-                fecha_inicio: "2026-03-12",
-                ejercicio: 2025, 
-                responsable: "Lic. Hugo Villalobos",
-                area: "Academia Metropolitana de Seguridad",
-                areas_responsables: ["Dirección Administrativa", "Academia de Policía", "Tesorería Municipal"],
-                asociado: 62000000.00,
-                observado: 9800000.00, 
-                solventado: 3200000.00,
-                reintegrado: 1500000.00,
-                estado: "En Proceso",
-                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
-            },
-            { 
-                clave: "AS-2026-EST-07", 
-                entidad: "Educación del Estado Gto (Nómina)", 
-                origen: "Estatal", 
-                fiscalizadora: "ASEG",
-                jefe_auditoria: "Lic. Gabriela Méndez",
-                fecha_inicio: "2026-05-15",
-                ejercicio: 2025, 
-                responsable: "Mtra. Gabriela Ortega",
-                area: "Recursos Humanos y Nóminas Plazas",
-                areas_responsables: ["Dirección de Personal", "Coordinación de Pagos", "Jurídico de Educación"],
-                asociado: 150000000.00,
-                observado: 34200000.00, 
-                solventado: 21000000.00,
-                reintegrado: 4200000.00,
-                estado: "En Proceso",
-                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
-            },
-            { 
-                clave: "AS-2026-FED-06", 
-                entidad: "Medio Ambiente Gto (Conservación)", 
-                origen: "Federal", 
-                fiscalizadora: "ASF",
-                jefe_auditoria: "Dr. Alberto Cienfuegos",
-                fecha_inicio: "2026-04-02",
-                ejercicio: 2025, 
-                responsable: "Lic. Daniela Montes",
-                area: "Dirección de Recursos Naturales",
-                areas_responsables: ["Unidad de Planeación", "Fideicomiso Ambiental", "Contabilidad Central"],
-                asociado: 22000000.00,
-                observado: 1850000.00, 
-                solventado: 1200000.00,
-                reintegrado: 150000.00,
-                estado: "En Proceso",
-                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
-            },
-            { 
-                clave: "AS-2026-EST-08", 
-                entidad: "DIF Estatal Guanajuato (Alimentos)", 
-                origen: "Estatal", 
-                fiscalizadora: "Sec. Honestidad",
-                jefe_auditoria: "C.P. Patricia Ledesma",
-                fecha_inicio: "2026-01-11",
-                ejercicio: 2024, 
-                responsable: "C.P. Ricardo Juárez",
-                area: "Dirección de Asistencia Alimentaria",
-                areas_responsables: ["Coordinación de Almacenes", "Compras Gubernamentales", "Jurídico DIF"],
-                asociado: 41000000.00,
-                observado: 5600000.00, 
-                solventado: 5600000.00,
-                reintegrado: 0.00,
-                estado: "Concluido",
-                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
-            },
-            { 
-                clave: "AS-2026-FED-07", 
-                entidad: "Comisión Estatal del Agua (CEAG)", 
-                origen: "Federal", 
-                fiscalizadora: "ASF",
-                jefe_auditoria: "Mtro. Ricardo Valenzuela",
-                fecha_inicio: "2026-05-02",
-                ejercicio: 2025, 
-                responsable: "Ing. Fernando Castro",
-                area: "Gerencia de Infraestructura Rural",
-                areas_responsables: ["Dirección de Proyectos", "Supervisión de Licitación", "Finanzas CEAG"],
-                asociado: 75000000.00,
-                observado: 16750000.00, 
-                solventado: 9000000.00,
-                reintegrado: 2200000.00,
-                estado: "En Proceso",
-                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
-            },
-            { 
-                clave: "AS-2026-EST-09", 
-                entidad: "Universidad de Guanajuato (Viáticos)", 
-                origen: "Estatal", 
-                fiscalizadora: "ASEG",
-                jefe_auditoria: "Mtro. Luis Felipe Guerrero",
-                fecha_inicio: "2026-02-27",
-                ejercicio: 2025, 
-                responsable: "Dr. Ernesto Padilla",
-                area: "Coordinación Administrativa y Finanzas",
-                areas_responsables: ["Tesorería Universitaria", "Control Presupuestal", "Contraloría Interna UG"],
-                asociado: 18000000.00,
-                observado: 2100000.00, 
-                solventado: 1800000.00,
-                reintegrado: 300000.00,
-                estado: "Concluido",
-                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
             }
         ];
 
-        // Mensajes motivacionales institucionales
+        // Mensajes motivacionales con ÍCONOS y Títulos Institucionales
         const mensajesMotivacionales = [
-            { titulo: "ÉTICA PROFESIONAL", texto: "La integridad es la piedra angular de nuestro trabajo. Auditar con rigor asegura la correcta aplicación de los recursos públicos en beneficio social." },
-            { titulo: "CONFIANZA PÚBLICA", texto: "Cada observación resuelta fortalece la confianza de la ciudadanía en las instituciones. ¡Sigamos construyendo un ejercicio transparente!" },
-            { titulo: "EXCELENCIA Y LOGRO", texto: "El análisis técnico preciso no solo identifica desviaciones, sino que previene el subejercicio y orienta la mejora continua gubernamental." },
-            { titulo: "VALOR INSTITUCIONAL", texto: "Honestidad, imparcialidad y objetividad. Llevamos con orgullo la responsabilidad de vigilar el patrimonio del Estado." },
-            { titulo: "COMPROMISO SOCIAL", texto: "La fiscalización no es solo revisar números, es garantizar que la infraestructura, los medicamentos y las pensiones lleguen de forma íntegra a la gente." }
+            { icon: "🛡️", titulo: "ÉTICA PROFESIONAL", texto: "La integridad es la piedra angular de nuestro trabajo. Auditar con rigor asegura la correcta aplicación de los recursos públicos en beneficio social." },
+            { icon: "🤝", titulo: "CONFIANZA PÚBLICA", texto: "Cada observación resuelta fortalece la confianza de la ciudadanía en las instituciones. ¡Sigamos construyendo un ejercicio transparente!" },
+            { icon: "📈", titulo: "EXCELENCIA Y LOGRO", texto: "El análisis técnico preciso no solo identifica desviaciones, sino que previene el subejercicio y orienta la mejora continua gubernamental." },
+            { icon: "⚖️", titulo: "VALOR INSTITUCIONAL", texto: "Honestidad, imparcialidad y objetividad. Llevamos con orgullo la responsabilidad de vigilar el patrimonio del Estado." },
+            { icon: "🏡", titulo: "COMPROMISO SOCIAL", texto: "La fiscalización no es solo revisar números, es garantizar que la infraestructura, los medicamentos y las pensiones lleguen de forma íntegra a la gente." }
         ];
 
         let msgIndex = 0;
 
-        // Tareas Pendientes para los Post-it
+        // Base de datos de tareas para Post-its con sus prioridades, títulos y mensajes
         let tareasPendientes = [
-            { id: "tarea_1", prioridad: "urgente", tag: "Urgente", mensaje: "Atender seguimiento a solventación de la auditoría <strong>AS-2026-FED-01</strong>." },
-            { id: "tarea_2", prioridad: "prioritario", tag: "Prioritario", mensaje: "Enviar respuesta al requerimiento de información <strong>AECF/0001/ASEG-ISS_004</strong>." },
-            { id: "tarea_3", prioridad: "normal", tag: "Normal", mensaje: "Enviar acuse de respuesta en atención a la auditoría <strong>AS-2026-EST-12</strong>." }
+            { id: "tarea_1", prioridad: "urgente", tag: "¡Crítico!", mensaje: "Atender de inmediato el pliego de observaciones y coordinar el seguimiento para la solventación de la auditoría <strong>AS-2026-FED-01</strong>." },
+            { id: "tarea_2", prioridad: "prioritario", tag: "Prioritario", mensaje: "Redactar y procesar respuesta formal al requerimiento extraordinario de información <strong>AECF/0001/ASEG-ISS_004</strong>." },
+            { id: "tarea_3", prioridad: "normal", tag: "General", mensaje: "Verificar y procesar el acuse de recibo de la respuesta oficial enviada para la auditoría de infraestructura <strong>AS-2026-EST-12</strong>." }
         ];
 
         window.onload = function() {
@@ -1051,16 +934,18 @@
             renderTables();
             renderPostits();
             
-            // Programación de Mensajes Motivacionales
+            // Primer mensaje de valores institucionales a los 15 segundos de cargar la página
             setTimeout(() => {
                 mostrarMensajeMotivacional();
-            }, 15000); // 15 segundos al cargar
+            }, 15000);
 
+            // Mensajes recurrentes cada 4 minutos (240,000 ms)
             setInterval(() => {
                 mostrarMensajeMotivacional();
-            }, 240000); // Cada 4 minutos (240000 ms)
+            }, 240000);
         }
 
+        // Lógica de Mensaje Motivacional / Institucional (Duración: 29 segundos exactos)
         function mostrarMensajeMotivacional() {
             const container = document.getElementById('toast-container');
             const msg = mensajesMotivacionales[msgIndex];
@@ -1069,19 +954,22 @@
             toast.className = 'toast-motivation';
             toast.innerHTML = `
                 <div class="toast-header">
-                    <span>🌟 ${msg.titulo}</span>
+                    <span>${msg.icon} ${msg.titulo}</span>
                     <button class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
                 </div>
-                <div>${msg.texto}</div>
+                <div class="toast-content-wrapper">
+                    <span class="toast-icon">${msg.icon}</span>
+                    <div>${msg.texto}</div>
+                </div>
             `;
             container.appendChild(toast);
 
-            // Auto-cerrado a los 10 segundos
+            // Cierre automático programado a los 29 segundos (29000 ms)
             setTimeout(() => {
-                toast.remove();
-            }, 10000);
+                if(toast) toast.remove();
+            }, 29000);
 
-            // Ciclo de mensajes
+            // Avanzar al siguiente mensaje en la lista
             msgIndex = (msgIndex + 1) % mensajesMotivacionales.length;
         }
 
@@ -1137,7 +1025,6 @@
                 const statusClass = aud.estado === 'En Proceso' ? 'proceso' : 'concluido';
                 const porSolventar = aud.observado - aud.solventado - aud.reintegrado;
 
-                // Generar lista de áreas responsables
                 const areasList = aud.areas_responsables.map(area => `<li>${area}</li>`).join('');
 
                 const filaConsulta = `
@@ -1203,7 +1090,6 @@
         function saveNewAudit(event) {
             event.preventDefault();
 
-            // Transformar la cadena de texto de áreas en un array
             const areasTexto = document.getElementById('areas_resp').value;
             const areasArray = areasTexto.split(',').map(item => item.trim()).filter(item => item.length > 0);
 
@@ -1245,7 +1131,7 @@
             alert(`Fase actualizada a "${auditorias[index].estado}" para la auditoría: ${auditorias[index].clave}`);
         }
 
-        /* --- CONTROL DE LOS POST-ITS INTERACTIVOS --- */
+        /* --- CONTROL Y RENDERIZADO DE POST-ITS INTERACTIVOS CON PRIORIDADES Y CONTROLES --- */
         function renderPostits() {
             const container = document.getElementById('postit-container');
             container.innerHTML = '';
@@ -1256,14 +1142,26 @@
 
                 if (!atendida && !silenciada) {
                     const postitElement = document.createElement('div');
-                    postitElement.className = 'postit-real';
+                    
+                    // Asignación de clase dinámica en base a prioridad
+                    let clasePrioridad = "postit-normal";
+                    if(tarea.prioridad === 'urgente') clasePrioridad = "postit-urgente";
+                    else if(tarea.prioridad === 'prioritario') clasePrioridad = "postit-prioritario";
+
+                    postitElement.className = `postit-real ${clasePrioridad}`;
                     postitElement.id = `postit-${tarea.id}`;
+                    
                     postitElement.innerHTML = `
+                        <div class="postit-header">
+                            <span>📌 TAREA: ${tarea.tag}</span>
+                            <button style="background:none; border:none; cursor:pointer; font-size:1rem; font-weight:bold; color:inherit;" onclick="cerrarPostit('${tarea.id}')" title="Cerrar temporalmente">×</button>
+                        </div>
                         <div class="postit-body">
                             ${tarea.mensaje}
                         </div>
-                        <div style="text-align: right;">
-                            <button class="btn-mini btn-consultar" style="background-color: #059669; color: white;" onclick="marcarAtendido('${tarea.id}')">✓ Atendido</button>
+                        <div class="postit-actions">
+                            <button class="btn-mini btn-consultar" style="font-size:0.6rem; padding: 3px 5px;" onclick="posponerPostit('${tarea.id}')" title="Posponer por sesión">⏳ Recordar</button>
+                            <button class="btn-mini" style="background-color: rgba(16,185,129, 0.2); color: #065F46; border: 1px solid #10B981; font-size:0.6rem; padding: 3px 5px;" onclick="marcarAtendido('${tarea.id}')" title="Completar Tarea">✓ Atendido</button>
                         </div>
                     `;
                     container.appendChild(postitElement);
@@ -1271,8 +1169,19 @@
             });
         }
 
+        // Acciones interactivas del Post-it:
+        function cerrarPostit(id) {
+            const postit = document.getElementById(`postit-${id}`);
+            if(postit) postit.remove();
+        }
+
         function marcarAtendido(id) {
             localStorage.setItem(`postit_done_${id}`, 'true');
+            renderPostits();
+        }
+
+        function posponerPostit(id) {
+            sessionStorage.setItem(`postit_snooze_${id}`, 'true');
             renderPostits();
         }
     </script>
