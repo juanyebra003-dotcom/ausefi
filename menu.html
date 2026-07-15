@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEFI - Panel de Control</title>
+    <title>SEFI - Panel de Control Inteligente</title>
     <style>
         :root {
             --azul-marino: #0B192C;
             --azul-principal: #1E3A8A;
-            --azul-brillante: #2563EB;
+            --azul-brillante: #00D2FF; /* Color neón principal */
+            --azul-glow: rgba(0, 210, 255, 0.35); /* Resplandor neón */
             --azul-suave: #EFF6FF;
             --blanco: #FFFFFF;
-            --gris-fondo: #F8FAFC;
-            --borde: #E2E8F0;
-            --texto-oscuro: #1E293B;
-            --texto-mutado: #64748B;
+            --gris-fondo: #0B111E; /* Fondo oscuro elegante para resaltar el neón */
+            --borde: #1E293B;
+            --texto-claro: #F1F5F9;
+            --texto-mutado: #94A3B8;
             --verde-exito: #10B981;
             --naranja-alerta: #F59E0B;
+            --rojo-urgente: #EF4444;
         }
 
         * {
@@ -28,7 +30,7 @@
 
         body {
             background-color: var(--gris-fondo);
-            color: var(--texto-oscuro);
+            color: var(--texto-claro);
             min-height: 100vh;
         }
 
@@ -44,7 +46,8 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-bottom: 2px solid var(--azul-principal);
+            box-shadow: 0 0 15px var(--azul-glow);
         }
 
         .navbar-brand {
@@ -58,11 +61,14 @@
             letter-spacing: 2px;
             font-weight: 800;
             color: var(--blanco);
+            text-shadow: 0 0 8px var(--azul-brillante);
         }
 
         .navbar-brand span {
             font-size: 0.8rem;
-            background-color: var(--azul-brillante);
+            background-color: var(--azul-principal);
+            border: 1px solid var(--azul-brillante);
+            box-shadow: 0 0 5px var(--azul-brillante);
             padding: 3px 8px;
             border-radius: 4px;
             font-weight: bold;
@@ -88,14 +94,15 @@
 
         .nav-item a:hover, .nav-item.active a {
             color: var(--blanco);
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 210, 255, 0.1);
+            box-shadow: 0 0 10px var(--azul-glow);
         }
 
         .user-profile {
             display: flex;
             align-items: center;
             gap: 10px;
-            border-left: 1px solid #1E293B;
+            border-left: 1px solid var(--borde);
             padding-left: 1.5rem;
         }
 
@@ -106,42 +113,56 @@
         .user-name {
             font-weight: 600;
             font-size: 0.9rem;
+            color: var(--blanco);
         }
 
         .user-role {
             font-size: 0.75rem;
-            color: #94A3B8;
+            color: var(--azul-brillante);
+            text-shadow: 0 0 3px var(--azul-glow);
         }
 
-        /* --- CONTENEDOR PRINCIPAL --- */
+        /* --- CONTENEDOR PRINCIPAL CON DISTRIBUCIÓN GRID (PARA EL POST-IT) --- */
         .main-container {
-            max-width: 1280px;
+            max-width: 1600px;
             margin: 2rem auto;
             padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
         }
 
-        /* --- TARJETAS METRICAS (KPIs) --- */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- TARJETAS METRICAS NEÓN --- */
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
+            grid-column: 1 / -1;
         }
 
         .metric-card {
-            background-color: var(--blanco);
+            background-color: var(--azul-marino);
             border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            border: 1.5px solid var(--borde);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid var(--borde);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.2s;
+            transition: all 0.3s;
         }
 
         .metric-card:hover {
             transform: translateY(-3px);
+            border-color: var(--azul-brillante);
+            box-shadow: 0 0 15px var(--azul-glow);
         }
 
         .metric-details h3 {
@@ -155,7 +176,8 @@
         .metric-value {
             font-size: 1.8rem;
             font-weight: 800;
-            color: var(--azul-marino);
+            color: var(--blanco);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
         }
 
         .metric-icon {
@@ -169,23 +191,26 @@
             font-weight: bold;
         }
 
-        .icon-total { background-color: var(--azul-suave); color: var(--azul-brillante); }
-        .icon-fed { background-color: #ECFDF5; color: var(--verde-exito); }
-        .icon-est { background-color: #FFFBEB; color: var(--naranja-alerta); }
+        .icon-total { background-color: rgba(0, 210, 255, 0.1); color: var(--azul-brillante); border: 1px solid var(--azul-brillante); }
+        .icon-fed { background-color: rgba(16, 185, 129, 0.1); color: var(--verde-exito); border: 1px solid var(--verde-exito); }
+        .icon-est { background-color: rgba(245, 158, 11, 0.1); color: var(--naranja-alerta); border: 1px solid var(--naranja-alerta); }
 
-        /* --- SECCIONES DINÁMICAS --- */
+        /* --- SECCIONES CON ILUMINACIÓN NEÓN --- */
         .section-panel {
-            background-color: var(--blanco);
+            background-color: var(--azul-marino);
             border-radius: 12px;
-            border: 1.5px solid var(--borde);
+            border: 1.5px solid var(--azul-principal);
             padding: 2rem;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            display: none; /* Se controlará con JS */
+            box-shadow: 0 0 15px rgba(30, 58, 138, 0.2);
+            transition: border-color 0.4s, box-shadow 0.4s;
+            display: none;
         }
 
+        /* Iluminación neón tenue azul para la sección activa */
         .section-panel.active-panel {
             display: block;
+            border-color: var(--azul-brillante);
+            box-shadow: 0 0 20px var(--azul-glow);
             animation: fadeIn 0.4s ease-in-out;
         }
 
@@ -199,81 +224,37 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--gris-fondo);
+            border-bottom: 1px solid var(--borde);
             padding-bottom: 1rem;
         }
 
         .panel-title {
             font-size: 1.4rem;
-            color: var(--azul-principal);
-            font-weight: 700;
-        }
-
-        /* --- FORMULARIO DE REGISTRO --- */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--texto-oscuro);
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            padding: 10px;
-            border: 1.5px solid var(--borde);
-            border-radius: 6px;
-            font-size: 0.95rem;
-            background-color: var(--gris-fondo);
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--azul-brillante);
-            background-color: var(--blanco);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .btn-submit {
-            grid-column: 1 / -1;
-            background-color: var(--azul-principal);
             color: var(--blanco);
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 1rem;
+            font-weight: 700;
+            text-shadow: 0 0 5px var(--azul-glow);
         }
 
-        .btn-submit:hover {
-            background-color: var(--azul-brillante);
-        }
-
-        /* --- TABLA DE AUDITORIAS (CONSULTA / MODIFICACIÓN) --- */
+        /* --- TABLA DE AUDITORIAS AVANZADA --- */
         .table-filters {
             display: flex;
             gap: 1rem;
-            margin-bottom: 1.5rem;
             align-items: center;
+        }
+
+        .table-filters select {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--borde);
+            background-color: var(--gris-fondo);
+            color: var(--texto-claro);
+            outline: none;
         }
 
         .table-container {
             width: 100%;
             overflow-x: auto;
-            border: 1.5px solid var(--borde);
+            border: 1px solid var(--borde);
             border-radius: 8px;
         }
 
@@ -281,60 +262,240 @@
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+            background-color: rgba(15, 23, 42, 0.5);
         }
 
         th {
-            background-color: var(--azul-suave);
-            color: var(--azul-principal);
-            padding: 12px 16px;
+            background-color: rgba(30, 41, 59, 0.8);
+            color: var(--azul-brillante);
+            padding: 12px;
             font-weight: 700;
             border-bottom: 2px solid var(--borde);
+            white-space: nowrap;
         }
 
         td {
-            padding: 14px 16px;
+            padding: 12px;
             border-bottom: 1px solid var(--borde);
-            color: var(--texto-oscuro);
+            color: var(--texto-claro);
+            vertical-align: middle;
         }
 
         tr:hover {
-            background-color: rgba(239, 246, 255, 0.4);
+            background-color: rgba(0, 210, 255, 0.05);
         }
 
         .badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 3px 6px;
+            border-radius: 8px;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
         }
 
-        .badge-federal { background-color: #D1FAE5; color: #065F46; }
-        .badge-estatal { background-color: #FEF3C7; color: #92400E; }
+        .badge-federal { background-color: rgba(16, 185, 129, 0.15); color: var(--verde-exito); border: 1px solid var(--verde-exito); }
+        .badge-estatal { background-color: rgba(245, 158, 11, 0.15); color: var(--naranja-alerta); border: 1px solid var(--naranja-alerta); }
         
-        .badge-status { background-color: #E2E8F0; color: #475569; }
-        .badge-status.proceso { background-color: #DBEAFE; color: #1E40AF; }
-        .badge-status.concluido { background-color: #D1FAE5; color: #065F46; }
+        .badge-status { background-color: rgba(148, 163, 184, 0.1); color: #94A3B8; }
+        .badge-status.proceso { background-color: rgba(37, 99, 235, 0.15); color: #60A5FA; border: 1px solid #3B82F6; }
+        .badge-status.concluido { background-color: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid var(--verde-exito); }
 
-        .btn-action {
-            padding: 6px 12px;
+        /* Estilo para los porcentajes del rubro */
+        .rubro-cell {
+            font-size: 0.75rem;
+            color: var(--texto-mutated);
+            line-height: 1.3;
+            max-width: 180px;
+        }
+
+        /* --- BOTONES DE ACCIÓN (CON ICONOS) --- */
+        .action-cell {
+            display: flex;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-mini {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 5px 8px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
             cursor: pointer;
-            border: none;
+            border: 1px solid transparent;
+            text-decoration: none;
             transition: all 0.2s;
         }
 
-        .btn-edit {
-            background-color: var(--azul-suave);
-            color: var(--azul-principal);
+        .btn-consultar {
+            background-color: rgba(148, 163, 184, 0.1);
+            color: #E2E8F0;
+            border-color: #475569;
+        }
+        .btn-consultar:hover {
+            background-color: #475569;
         }
 
-        .btn-edit:hover {
+        .btn-editar {
+            background-color: rgba(37, 99, 235, 0.15);
+            color: #93C5FD;
+            border-color: #2563EB;
+        }
+        .btn-editar:hover {
+            background-color: #2563EB;
+            color: white;
+        }
+
+        .btn-transferir {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: #A7F3D0;
+            border-color: var(--verde-exito);
+        }
+        .btn-transferir:hover {
+            background-color: var(--verde-exito);
+            color: white;
+        }
+
+        .btn-grafico {
+            background-color: rgba(0, 210, 255, 0.1);
+            color: var(--azul-brillante);
+            border-color: var(--azul-brillante);
+            padding: 4px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .btn-grafico:hover {
+            background-color: var(--azul-brillante);
+            color: var(--azul-marino);
+            box-shadow: 0 0 8px var(--azul-brillante);
+        }
+
+        /* --- POST-IT LATERAL DE ACCIONES PENDIENTES --- */
+        .sidebar-pending {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .postit-container {
+            background-color: #FFF9C4; /* Amarillo suave clásico de post-it */
+            color: #33301C;
+            padding: 1.5rem;
+            border-radius: 4px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.4), inset 0 0 20px rgba(0,0,0,0.05);
+            transform: rotate(1deg);
+            position: sticky;
+            top: 90px;
+            border-left: 5px solid #FBC02D;
+        }
+
+        .postit-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed rgba(0,0,0,0.2);
+            padding-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .postit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            list-style: none;
+        }
+
+        .postit-item {
+            font-size: 0.8rem;
+            line-height: 1.4;
+            padding-bottom: 8px;
+            border-bottom: 1px dotted rgba(0,0,0,0.1);
+        }
+
+        .postit-item:last-child {
+            border-bottom: none;
+        }
+
+        .tag-priority {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .tag-urgente { background-color: var(--rojo-urgente); }
+        .tag-prioritario { background-color: #D97706; }
+        .tag-normal { background-color: #059669; }
+
+        /* --- FORMULARIO DE REGISTRO --- */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--texto-claro);
+        }
+
+        .form-group input, .form-group select {
+            padding: 10px;
+            border: 1px solid var(--borde);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            background-color: var(--gris-fondo);
+            color: var(--texto-claro);
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--azul-brillante);
+            box-shadow: 0 0 10px var(--azul-glow);
+        }
+
+        .btn-submit {
+            grid-column: 1 / -1;
             background-color: var(--azul-principal);
             color: var(--blanco);
+            border: 1px solid var(--azul-brillante);
+            box-shadow: 0 0 8px var(--azul-glow);
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--azul-brillante);
+            color: var(--azul-marino);
+            box-shadow: 0 0 15px var(--azul-brillante);
         }
     </style>
 </head>
@@ -355,176 +516,258 @@
 
         <div class="user-profile">
             <div class="user-info">
-                <div class="user-name" id="profile-name">Cargando...</div>
-                <div class="user-role" id="profile-role">Auditor General</div>
+                <div class="user-name" id="profile-name">Juan Miguel Yebra</div>
+                <div class="user-role" id="profile-role">Auditor Superior</div>
             </div>
         </div>
     </nav>
 
     <div class="main-container">
 
-        <!-- DASHBOARD METRICAS -->
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-details">
-                    <h3>Total Auditorías</h3>
-                    <div class="metric-value" id="count-total">0</div>
-                </div>
-                <div class="metric-icon icon-total">Σ</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-details">
-                    <h3>Federales</h3>
-                    <div class="metric-value" id="count-fed">0</div>
-                </div>
-                <div class="metric-icon icon-fed">F</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-details">
-                    <h3>Estatales</h3>
-                    <div class="metric-value" id="count-est">0</div>
-                </div>
-                <div class="metric-icon icon-est">E</div>
-            </div>
-        </div>
-
-        <!-- 1. PANEL: CONSULTAR AUDITORÍAS (POR DEFECTO) -->
-        <section id="panel-consultar" class="section-panel active-panel">
-            <div class="panel-header">
-                <h2 class="panel-title">Listado General de Auditorías</h2>
-                <div class="table-filters">
-                    <label for="filter-origen">Filtrar Origen:</label>
-                    <select id="filter-origen" onchange="applyFilters()">
-                        <option value="todos">Todos</option>
-                        <option value="Federal">Federales</option>
-                        <option value="Estatal">Estatales</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>No. Oficio / Clave</th>
-                            <th>Entidad Fiscalizada</th>
-                            <th>Tipo / Origen</th>
-                            <th>Ejercicio</th>
-                            <th>Monto Observado</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body-consultar">
-                        <!-- Se llena dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- 2. PANEL: REGISTRAR AUDITORÍA -->
-        <section id="panel-registrar" class="section-panel">
-            <div class="panel-header">
-                <h2 class="panel-title">Registrar Nueva Auditoría</h2>
-            </div>
-            <form id="auditForm" onsubmit="saveNewAudit(event)">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="clave">No. de Oficio / Clave de Auditoría:</label>
-                        <input type="text" id="clave" required placeholder="Ej: AS-2026-FED-01">
+        <!-- CONTENIDO DE CONTROL PRINCIPAL (COLUMNA IZQUIERDA) -->
+        <main style="display: flex; flex-direction: column; gap: 2rem;">
+            
+            <!-- DASHBOARD METRICAS -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-details">
+                        <h3>Total Auditorías</h3>
+                        <div class="metric-value" id="count-total">0</div>
                     </div>
-                    <div class="form-group">
-                        <label for="entidad">Entidad Fiscalizada (Municipio / Dependencia):</label>
-                        <input type="text" id="entidad" required placeholder="Ej: Municipio de Guanajuato">
+                    <div class="metric-icon icon-total">Σ</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-details">
+                        <h3>Federales</h3>
+                        <div class="metric-value" id="count-fed">0</div>
                     </div>
-                    <div class="form-group">
-                        <label for="origen">Origen de Fondos:</label>
-                        <select id="origen" required>
-                            <option value="Federal">Federal</option>
-                            <option value="Estatal">Estatal</option>
+                    <div class="metric-icon icon-fed">F</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-details">
+                        <h3>Estatales</h3>
+                        <div class="metric-value" id="count-est">0</div>
+                    </div>
+                    <div class="metric-icon icon-est">E</div>
+                </div>
+            </div>
+
+            <!-- 1. PANEL: CONSULTAR AUDITORÍAS -->
+            <section id="panel-consultar" class="section-panel active-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Bandeja de Auditorías Fiscales</h2>
+                    <div class="table-filters">
+                        <label for="filter-origen">Filtrar:</label>
+                        <select id="filter-origen" onchange="applyFilters()">
+                            <option value="todos">Todos los Orígenes</option>
+                            <option value="Federal">Federales</option>
+                            <option value="Estatal">Estatales</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="ejercicio">Ejercicio Fiscal:</label>
-                        <input type="number" id="ejercicio" required min="2020" max="2027" value="2026">
-                    </div>
-                    <div class="form-group">
-                        <label for="monto">Monto Observado (MXN):</label>
-                        <input type="number" id="monto" required min="0" step="0.01" placeholder="0.00">
-                    </div>
-                    <div class="form-group">
-                        <label for="estado">Estado Inicial:</label>
-                        <select id="estado" required>
-                            <option value="En Proceso">En Proceso</option>
-                            <option value="Concluido">Concluido</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-submit">Dar de Alta Auditoría</button>
                 </div>
-            </form>
-        </section>
 
-        <!-- 3. PANEL: MODIFICAR AUDITORÍA -->
-        <section id="panel-modificar" class="section-panel">
-            <div class="panel-header">
-                <h2 class="panel-title">Modificar o Editar Auditorías Existentes</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Clave / Oficio</th>
+                                <th>Entidad</th>
+                                <th>Origen</th>
+                                <th>Ejercicio</th>
+                                <th>Monto Asociado</th>
+                                <th>Monto Observado</th>
+                                <th>Monto Solventado</th>
+                                <th>Monto Reintegrado</th>
+                                <th>Por Solventar</th>
+                                <th>Rubro Obs. (%)</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body-consultar">
+                            <!-- Se procesa vía JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 2. PANEL: REGISTRAR AUDITORÍA -->
+            <section id="panel-registrar" class="section-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Registrar Nueva Cédula de Auditoría</h2>
+                </div>
+                <form id="auditForm" onsubmit="saveNewAudit(event)">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="clave">No. de Oficio / Clave:</label>
+                            <input type="text" id="clave" required placeholder="Ej: AECF/0002/ASEG-2026">
+                        </div>
+                        <div class="form-group">
+                            <label for="entidad">Entidad Fiscalizada:</label>
+                            <input type="text" id="entidad" required placeholder="Ej: Municipio de Moroleón">
+                        </div>
+                        <div class="form-group">
+                            <label for="origen">Origen Financiero:</label>
+                            <select id="origen" required>
+                                <option value="Federal">Federal</option>
+                                <option value="Estatal">Estatal</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ejercicio">Ejercicio Fiscal:</label>
+                            <input type="number" id="ejercicio" required min="2020" max="2027" value="2026">
+                        </div>
+                        <div class="form-group">
+                            <label for="m_asociado">Monto Asociado (MXN):</label>
+                            <input type="number" id="m_asociado" required placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="m_observado">Monto Observado (MXN):</label>
+                            <input type="number" id="m_observado" required placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="m_solventado">Monto Solventado (MXN):</label>
+                            <input type="number" id="m_solventado" required placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="m_reintegrado">Monto Reintegrado (MXN):</label>
+                            <input type="number" id="m_reintegrado" required placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="estado">Fase actual:</label>
+                            <select id="estado" required>
+                                <option value="En Proceso">En Proceso</option>
+                                <option value="Concluido">Concluido</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-submit">Dar de Alta y Calcular Rubros</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 3. PANEL: MODIFICAR AUDITORÍA -->
+            <section id="panel-modificar" class="section-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Modificar Estado Operativo de Cédulas</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No. Oficio / Clave</th>
+                                <th>Entidad</th>
+                                <th>Origen</th>
+                                <th>Ejercicio</th>
+                                <th>Por Solventar</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body-modificar">
+                            <!-- Se procesa vía JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- SECCIÓN POST-IT PENDIENTES (COLUMNA DERECHA) -->
+        <aside class="sidebar-pending">
+            <div class="postit-container">
+                <div class="postit-title">
+                    📌 PENDIENTES DEL DÍA
+                </div>
+                <ul class="postit-list">
+                    <li class="postit-item">
+                        <span class="tag-priority tag-urgente">Urgente</span>
+                        <div>Atender seguimiento a solventación de la auditoría <strong>AS-2026-FED-01</strong>.</div>
+                    </li>
+                    <li class="postit-item">
+                        <span class="tag-priority tag-prioritario">Prioritario</span>
+                        <div>No olvides enviar la respuesta al requerimiento de información <strong>AECF/0001/ASEG-ISS_004</strong>.</div>
+                    </li>
+                    <li class="postit-item">
+                        <span class="tag-priority tag-normal">Normal</span>
+                        <div>Enviar acuse de respuesta en atención a la auditoría <strong>AS-2026-EST-12</strong>.</div>
+                    </li>
+                </ul>
             </div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>No. Oficio / Clave</th>
-                            <th>Entidad Fiscalizada</th>
-                            <th>Tipo Origen</th>
-                            <th>Ejercicio</th>
-                            <th>Estado</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body-modificar">
-                        <!-- Se llena dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
+        </aside>
 
     </div>
 
     <script>
-        // BASE DE DATOS LOCAL INICIAL (Auditorías Federales y Estatales de prueba)
+        // BASE DE DATOS LOCAL CON LOS NUEVOS CAMPOS FINANCIEROS Y DESGLOSE DE RUBROS SOLICITADOS
         let auditorias = [
-            { clave: "AS-2026-FED-01", entidad: "San Miguel de Allende (FISMDF)", origen: "Federal", ejercicio: 2025, monto: 14250000.00, estado: "En Proceso" },
-            { clave: "AS-2026-EST-04", entidad: "Secretaría de Obra Pública Gto", origen: "Estatal", ejercicio: 2025, monto: 8540300.50, estado: "Concluido" },
-            { clave: "AS-2026-FED-02", entidad: "Municipio de Celaya (FORTAMUN)", origen: "Federal", ejercicio: 2024, monto: 23110200.00, estado: "En Proceso" },
-            { clave: "AS-2026-EST-12", entidad: "SAPAL León (Infraestructura)", origen: "Estatal", ejercicio: 2025, monto: 4200150.00, estado: "En Proceso" }
+            { 
+                clave: "AS-2026-FED-01", 
+                entidad: "San Miguel de Allende (FISMDF)", 
+                origen: "Federal", 
+                ejercicio: 2025, 
+                asociado: 50000000.00,
+                observado: 14250000.00, 
+                solventado: 8000000.00,
+                reintegrado: 1250000.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-EST-04", 
+                entidad: "Secretaría de Obra Pública Gto", 
+                origen: "Estatal", 
+                ejercicio: 2025, 
+                asociado: 35000000.00,
+                observado: 8540300.50, 
+                solventado: 8540300.50,
+                reintegrado: 0.00,
+                estado: "Concluido",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-FED-02", 
+                entidad: "Municipio de Celaya (FORTAMUN)", 
+                origen: "Federal", 
+                ejercicio: 2024, 
+                asociado: 80000000.00,
+                observado: 23110200.00, 
+                solventado: 12000000.00,
+                reintegrado: 3110200.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-EST-12", 
+                entidad: "SAPAL León (Infraestructura)", 
+                origen: "Estatal", 
+                ejercicio: 2025, 
+                asociado: 15000000.00,
+                observado: 4200150.00, 
+                solventado: 1000000.00,
+                reintegrado: 500000.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            }
         ];
 
-        // Al iniciar la página
         window.onload = function() {
-            // Leer datos del perfil cargados por el login de SEFI
-            const userName = localStorage.getItem('sefi_user_name') || 'Auditor Invitado';
-            const userPuesto = localStorage.getItem('sefi_user_puesto') || 'Área de Control';
-            
+            // Cargar datos locales de sesión (si existen)
+            const userName = localStorage.getItem('sefi_user_name') || 'Juan Miguel Yebra';
+            const userPuesto = localStorage.getItem('sefi_user_puesto') || 'Auditor Superior';
             document.getElementById('profile-name').textContent = userName;
             document.getElementById('profile-role').textContent = userPuesto;
 
-            // Cargar datos en las tablas e indicadores
             updateDashboard();
             renderTables();
         }
 
-        // Función para cambiar de pestaña en el menú superior
         function switchPanel(panelId) {
-            // Remover estado activo de todo el menú
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            // Ocultar todas las secciones
             document.querySelectorAll('.section-panel').forEach(panel => panel.classList.remove('active-panel'));
 
-            // Activar el menú e item seleccionado
             document.getElementById(`menu-${panelId}`).classList.add('active');
             document.getElementById(`panel-${panelId}`).classList.add('active-panel');
         }
 
-        // Calcular e inyectar valores en los KPI dinámicos
         function updateDashboard() {
             const total = auditorias.length;
             const federales = auditorias.filter(a => a.origen === 'Federal').length;
@@ -535,7 +778,11 @@
             document.getElementById('count-est').textContent = estatales;
         }
 
-        // Renderizar las tablas en base a los datos cargados
+        // Helper para dar formato de moneda
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
+        }
+
         function renderTables(filter = 'todos') {
             const tbodyConsultar = document.getElementById('table-body-consultar');
             const tbodyModificar = document.getElementById('table-body-modificar');
@@ -548,75 +795,100 @@
             dataFiltrada.forEach((aud, index) => {
                 const badgeOrigen = aud.origen === 'Federal' ? 'badge-federal' : 'badge-estatal';
                 const statusClass = aud.estado === 'En Proceso' ? 'proceso' : 'concluido';
-                const montoFormateado = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(aud.monto);
+                
+                // Cálculo automático del Monto por Solventar (Obs - Solv - Reint)
+                const porSolventar = aud.observado - aud.solventado - aud.reintegrado;
 
-                // Fila para tabla Consulta
+                // Armar fila para el módulo Consulta con el desglose avanzado solicitado
                 const filaConsulta = `
                     <tr>
                         <td><strong>${aud.clave}</strong></td>
                         <td>${aud.entidad}</td>
                         <td><span class="badge ${badgeOrigen}">${aud.origen}</span></td>
                         <td>${aud.ejercicio}</td>
-                        <td><strong>${montoFormateado}</strong></td>
-                        <td><span class="badge badge-status ${statusClass}">${aud.estado}</span></td>
+                        <td>${formatMoney(aud.asociado)}</td>
+                        <td style="color: #FDA4AF;">${formatMoney(aud.observado)}</td>
+                        <td style="color: #6EE7B7;">${formatMoney(aud.solventado)}</td>
+                        <td style="color: #93C5FD;">${formatMoney(aud.reintegrado)}</td>
+                        <td style="font-weight: bold; color: ${porSolventar > 0 ? '#FCA5A5' : '#6EE7B7'}">${formatMoney(porSolventar)}</td>
+                        <td class="rubro-cell">
+                            ${aud.rubros}
+                            <a href="graficosdefin.html?clave=${encodeURIComponent(aud.clave)}" class="btn-grafico" title="Ver Gráficos del Rubro">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                            </a>
+                        </td>
+                        <td>
+                            <div class="action-cell">
+                                <a href="consultar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-consultar" title="Consultar">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Q
+                                </a>
+                                <a href="Editar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-editar" title="Editar">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> E
+                                </a>
+                                <a href="transferir.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-transferir" title="Transferir">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg> T
+                                </a>
+                            </div>
+                        </td>
                     </tr>
                 `;
                 tbodyConsultar.innerHTML += filaConsulta;
 
-                // Fila para tabla Modificar (con acción interactiva)
+                // Fila de Modificación de Estados
                 const filaModificar = `
                     <tr>
                         <td><strong>${aud.clave}</strong></td>
                         <td>${aud.entidad}</td>
                         <td><span class="badge ${badgeOrigen}">${aud.origen}</span></td>
                         <td>${aud.ejercicio}</td>
+                        <td style="font-weight: bold;">${formatMoney(porSolventar)}</td>
                         <td><span class="badge badge-status ${statusClass}">${aud.estado}</span></td>
-                        <td><button class="btn-action btn-edit" onclick="toggleStatus(${index})">Alternar Estado</button></td>
+                        <td><button class="btn-mini btn-editar" onclick="toggleStatus(${index})">Cambiar Estado</button></td>
                     </tr>
                 `;
                 tbodyModificar.innerHTML += filaModificar;
             });
         }
 
-        // Aplicar filtros en tiempo real
         function applyFilters() {
             const selectedVal = document.getElementById('filter-origen').value;
             renderTables(selectedVal);
         }
 
-        // Guardar nueva auditoría (acción del formulario)
         function saveNewAudit(event) {
             event.preventDefault();
 
             const nuevaAud = {
-                clave: document.getElementById('clave').value,
-                entidad: document.getElementById('entidad').value,
+                clave: document.getElementById('clave').value.trim(),
+                entidad: document.getElementById('entidad').value.trim(),
                 origen: document.getElementById('origen').value,
                 ejercicio: parseInt(document.getElementById('ejercicio').value),
-                monto: parseFloat(document.getElementById('monto').value),
-                estado: document.getElementById('estado').value
+                asociado: parseFloat(document.getElementById('m_asociado').value) || 0,
+                observado: parseFloat(document.getElementById('m_observado').value) || 0,
+                solventado: parseFloat(document.getElementById('m_solventado').value) || 0,
+                reintegrado: parseFloat(document.getElementById('m_reintegrado').value) || 0,
+                estado: document.getElementById('estado').value,
+                // Le asociamos automáticamente el desglose porcentual requerido
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
             };
 
-            // Insertar al arreglo local
             auditorias.push(nuevaAud);
 
-            // Actualizar vistas
             updateDashboard();
             renderTables();
             document.getElementById('auditForm').reset();
 
-            alert('¡Auditoría agregada exitosamente al sistema!');
-            switchPanel('consultar'); // Redirige automáticamente
+            alert('¡Auditoría registrada de manera exitosa en el ecosistema SEFI!');
+            switchPanel('consultar');
         }
 
-        // Alternar el estado (En proceso / Concluido) interactivo en la pestaña de Modificar
         function toggleStatus(index) {
             const actual = auditorias[index].estado;
             auditorias[index].estado = actual === 'En Proceso' ? 'Concluido' : 'En Proceso';
             
             renderTables();
             updateDashboard();
-            alert(`Estado actualizado para la auditoría con clave: ${auditorias[index].clave}`);
+            alert(`Fase actualizada a "${auditorias[index].estado}" para la auditoría: ${auditorias[index].clave}`);
         }
     </script>
 </body>
