@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AUSEFI - Panel de Control</title>
+    <title>AUSEFI - Panel de Control Superior</title>
     <style>
         :root {
             /* Colores Institucionales */
@@ -34,7 +34,7 @@
             min-height: 100vh;
         }
 
-        /* --- NAVBAR SUPERIOR --- */
+        /* --- NAVBAR SUPERIOR INTERACTIVO --- */
         .navbar {
             background-color: var(--azul-marino);
             color: var(--blanco);
@@ -149,7 +149,7 @@
 
         /* --- CONTENEDOR PRINCIPAL --- */
         .main-container {
-            max-width: 1750px;
+            max-width: 1850px;
             margin: 2rem auto;
             padding: 0 1.5rem;
             display: flex;
@@ -211,7 +211,7 @@
         .icon-fed { background-color: rgba(16, 185, 129, 0.1); color: var(--verde-exito); }
         .icon-est { background-color: rgba(245, 158, 11, 0.1); color: var(--naranja-alerta); }
 
-        /* --- SECCIONES ILUMINADAS CON LUZ NEÓN --- */
+        /* --- SECCIONES PANALES --- */
         .section-panel {
             background-color: var(--blanco);
             border-radius: 12px;
@@ -276,7 +276,7 @@
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             background-color: var(--blanco);
         }
 
@@ -314,22 +314,44 @@
         .badge-status.proceso { background-color: rgba(37, 99, 235, 0.1); color: #2563EB; border: 1px solid #3B82F6; }
         .badge-status.concluido { background-color: rgba(16, 185, 129, 0.1); color: var(--verde-exito); border: 1px solid var(--verde-exito); }
 
+        .badge-fiscalizadora {
+            background-color: #F1F5F9;
+            color: #334155;
+            border: 1px solid #CBD5E1;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: bold;
+        }
+
         .rubro-cell {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: var(--texto-mutado);
             line-height: 1.3;
-            max-width: 160px;
+            max-width: 150px;
         }
 
         .meta-cell {
             font-size: 0.75rem;
             font-weight: 500;
+            line-height: 1.3;
         }
 
         .meta-cell span {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             color: var(--texto-mutado);
+        }
+
+        .responsables-list {
+            font-size: 0.7rem;
+            color: #475569;
+            padding-left: 12px;
+            margin: 0;
+        }
+
+        .responsables-list li {
+            margin-bottom: 2px;
         }
 
         /* --- BOTONES DE ACCIÓN --- */
@@ -346,7 +368,7 @@
             gap: 2px;
             padding: 4px 6px;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: bold;
             cursor: pointer;
             border: 1px solid transparent;
@@ -379,6 +401,58 @@
             color: var(--blanco);
         }
 
+        /* --- POPUPS MOTIVACIONALES / INSTITUCIONALES --- */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast-motivation {
+            pointer-events: auto;
+            width: 450px;
+            background: linear-gradient(135deg, #1E3A8A 0%, #0B192C 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+            border-left: 5px solid var(--azul-brillante);
+            font-size: 0.85rem;
+            animation: slideDown 0.5s ease-out;
+            position: relative;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .toast-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: var(--azul-brillante);
+            margin-bottom: 6px;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
         /* --- POST-ITS SUPERPUESTOS --- */
         .postit-overlay-container {
             position: fixed;
@@ -406,11 +480,6 @@
             border-bottom-right-radius: 40px 10px;
         }
 
-        .postit-real:nth-child(even) {
-            transform: rotate(2deg);
-            background: linear-gradient(135deg, #fffae0 0%, #fdf5b7 100%);
-        }
-
         .postit-real::before {
             content: "";
             position: absolute;
@@ -419,71 +488,14 @@
             width: 90px;
             height: 25px;
             background-color: rgba(255, 255, 255, 0.45);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             transform: rotate(-2deg);
         }
-
-        .postit-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .tag-priority {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.65rem;
-            font-weight: bold;
-            color: white;
-            text-transform: uppercase;
-        }
-
-        .tag-urgente { background-color: var(--rojo-urgente); }
-        .tag-prioritario { background-color: #D97706; }
-        .tag-normal { background-color: #059669; }
 
         .postit-body {
             font-size: 0.8rem;
             line-height: 1.4;
             margin-bottom: 12px;
             font-weight: 500;
-        }
-
-        .postit-actions {
-            display: flex;
-            justify-content: space-between;
-            gap: 6px;
-            border-top: 1px dotted rgba(0,0,0,0.15);
-            padding-top: 8px;
-        }
-
-        .btn-postit {
-            background: none;
-            border: none;
-            font-size: 0.7rem;
-            font-weight: 700;
-            cursor: pointer;
-            padding: 4px 6px;
-            border-radius: 3px;
-            transition: background 0.2s;
-        }
-
-        .btn-postit-reminder {
-            color: #4B5563;
-            background-color: rgba(0,0,0,0.04);
-        }
-        .btn-postit-reminder:hover {
-            background-color: rgba(0,0,0,0.08);
-        }
-
-        .btn-postit-done {
-            color: #059669;
-            background-color: rgba(5, 150, 105, 0.1);
-        }
-        .btn-postit-done:hover {
-            background-color: rgba(5, 150, 105, 0.2);
         }
 
         /* --- FORMULARIOS --- */
@@ -515,12 +527,6 @@
             transition: all 0.3s;
         }
 
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--azul-brillante);
-            box-shadow: 0 0 8px var(--azul-glow);
-        }
-
         .btn-submit {
             grid-column: 1 / -1;
             background-color: var(--azul-principal);
@@ -537,20 +543,22 @@
 
         .btn-submit:hover {
             background-color: var(--azul-marino);
-            box-shadow: 0 0 10px rgba(11, 25, 44, 0.2);
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR SUPERIOR INTERACTIVO -->
+    <!-- MENSAJES MOTIVACIONALES CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- NAVBAR SUPERIOR -->
     <nav class="navbar">
         <div class="navbar-brand">
             <h2>AUSEFI</h2>
             <span>SISTEMA AUDITOR</span>
         </div>
 
-        <!-- Indicadores Financieros Globales Solicitados -->
+        <!-- Indicadores Financieros Globales -->
         <div class="nav-financial-metrics">
             <div class="nav-financial-item">
                 <span class="label">OBSERVADO</span>
@@ -610,10 +618,10 @@
             </div>
         </div>
 
-        <!-- 1. PANEL: CONSULTAR AUDITORÍAS -->
+        <!-- PANEL: CONSULTAR AUDITORÍAS -->
         <section id="panel-consultar" class="section-panel active-panel">
             <div class="panel-header">
-                <h2 class="panel-title">Bandeja de Auditorías </h2>
+                <h2 class="panel-title">Bandeja de Auditorías Fiscales</h2>
                 <div class="table-filters">
                     <label for="filter-origen">Filtrar:</label>
                     <select id="filter-origen" onchange="applyFilters()">
@@ -631,8 +639,12 @@
                             <th>Clave / Oficio</th>
                             <th>Entidad</th>
                             <th>Origen</th>
+                            <th>Entidad Fiscalizadora</th>
+                            <th>Jefe de Auditoría</th>
+                            <th>Inicio de Auditoría</th>
                             <th>Ejercicio</th>
-                            <th>Responsable / Área</th>
+                            <th>Supervisor de Auditoría</th>
+                            <th>Áreas Responsables</th>
                             <th>Monto Asociado</th>
                             <th>Monto Observado</th>
                             <th>Monto Solventado</th>
@@ -643,13 +655,13 @@
                         </tr>
                     </thead>
                     <tbody id="table-body-consultar">
-                        <!-- Procesado por JS -->
+                        <!-- Render por JS -->
                     </tbody>
                 </table>
             </div>
         </section>
 
-        <!-- 2. PANEL: REGISTRAR AUDITORÍA -->
+        <!-- PANEL: REGISTRAR AUDITORÍA -->
         <section id="panel-registrar" class="section-panel">
             <div class="panel-header">
                 <h2 class="panel-title">Registrar Nueva Cédula de Auditoría</h2>
@@ -672,16 +684,37 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="fiscalizadora">Entidad Fiscalizadora:</label>
+                        <select id="fiscalizadora" required>
+                            <option value="ASEG">ASEG</option>
+                            <option value="ASF">ASF</option>
+                            <option value="Sec. Honestidad">Sec. Honestidad</option>
+                            <option value="SFP">SFP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="jefe_auditoria">Jefe de Auditoría:</label>
+                        <input type="text" id="jefe_auditoria" required placeholder="Ej: Dr. Manuel Escobedo">
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha_inicio">Inicio de Auditoría (Oficio):</label>
+                        <input type="date" id="fecha_inicio" required>
+                    </div>
+                    <div class="form-group">
                         <label for="ejercicio">Ejercicio Fiscal:</label>
                         <input type="number" id="ejercicio" required min="2020" max="2027" value="2026">
                     </div>
                     <div class="form-group">
-                        <label for="responsable">Auditor Responsable:</label>
+                        <label for="responsable">Supervisor Interno:</label>
                         <input type="text" id="responsable" required placeholder="Ej: Lic. Carlos Mendoza">
                     </div>
                     <div class="form-group">
-                        <label for="area">Área Involucrada:</label>
+                        <label for="area">Dirección Interna:</label>
                         <input type="text" id="area" required placeholder="Ej: Dirección de Obra Pública">
+                    </div>
+                    <div class="form-group">
+                        <label for="areas_resp">Áreas Responsables (Separadas por comas):</label>
+                        <input type="text" id="areas_resp" required placeholder="Ej: Tesorería, Dirección de Servicios, Adquisiciones">
                     </div>
                     <div class="form-group">
                         <label for="m_asociado">Monto Asociado (MXN):</label>
@@ -706,12 +739,12 @@
                             <option value="Concluido">Concluido</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn-submit">Dar de Alta y Calcular Rubros</button>
+                    <button type="submit" class="btn-submit">Dar de Alta y Calcular Cédula</button>
                 </div>
             </form>
         </section>
 
-        <!-- 3. PANEL: MODIFICAR AUDITORÍA -->
+        <!-- PANEL: MODIFICAR AUDITORÍA -->
         <section id="panel-modificar" class="section-panel">
             <div class="panel-header">
                 <h2 class="panel-title">Modificar Estado Operativo de Cédulas</h2>
@@ -730,7 +763,7 @@
                         </tr>
                     </thead>
                     <tbody id="table-body-modificar">
-                        <!-- Procesado por JS -->
+                        <!-- Render por JS -->
                     </tbody>
                 </table>
             </div>
@@ -739,15 +772,19 @@
     </div>
 
     <script>
-        // BASE DE DATOS LOCAL AMPLIADA CON 14 AUDITORÍAS (4 ORIGINALES + 10 NUEVAS SOLICITADAS)
+        // BASE DE DATOS LOCAL AMPLIADA CON LOS CAMPOS DE SUPERVISIÓN, ÁREAS RESPONSABLES, ENTES FISCALIZADORES Y FECHAS
         let auditorias = [
             { 
                 clave: "AS-2026-FED-01", 
                 entidad: "San Miguel de Allende (FISMDF)", 
                 origen: "Federal", 
+                fiscalizadora: "ASF",
+                jefe_auditoria: "C.P. Raúl Martínez Vega",
+                fecha_inicio: "2026-02-10",
                 ejercicio: 2025, 
                 responsable: "Lic. Clara Belmonte",
                 area: "Desarrollo Social y Humano",
+                areas_responsables: ["Dirección de Obras", "Tesorería Municipal", "Desarrollo Social"],
                 asociado: 50000000.00,
                 observado: 14250000.00, 
                 solventado: 8000000.00,
@@ -759,9 +796,13 @@
                 clave: "AS-2026-EST-04", 
                 entidad: "Secretaría de Obra Pública Gto", 
                 origen: "Estatal", 
+                fiscalizadora: "ASEG",
+                jefe_auditoria: "Lic. Andrea González Ramos",
+                fecha_inicio: "2026-03-05",
                 ejercicio: 2025, 
                 responsable: "Ing. Roberto Esquivel",
                 area: "Dirección de Infraestructura Vial",
+                areas_responsables: ["Dirección de Costos", "Coordinación de Licitaciones", "Supervisión de Zona Centro"],
                 asociado: 35000000.00,
                 observado: 8540300.50, 
                 solventado: 8540300.50,
@@ -773,9 +814,13 @@
                 clave: "AS-2026-FED-02", 
                 entidad: "Municipio de Celaya (FORTAMUN)", 
                 origen: "Federal", 
+                fiscalizadora: "SFP",
+                jefe_auditoria: "Ing. Jaime Torres Alarcón",
+                fecha_inicio: "2026-01-15",
                 ejercicio: 2024, 
                 responsable: "C.P. Sergio Valdivia",
                 area: "Tesorería y Finanzas",
+                areas_responsables: ["Secretaría de Seguridad", "Dirección de Egresos", "Oficialía Mayor"],
                 asociado: 80000000.00,
                 observado: 23110200.00, 
                 solventado: 12000000.00,
@@ -787,9 +832,13 @@
                 clave: "AS-2026-EST-12", 
                 entidad: "SAPAL León (Infraestructura)", 
                 origen: "Estatal", 
+                fiscalizadora: "Sec. Honestidad",
+                jefe_auditoria: "C.P. Martha Flores Solís",
+                fecha_inicio: "2026-04-12",
                 ejercicio: 2025, 
                 responsable: "Lic. Diana Paulina Ruiz",
                 area: "Proyectos Hídricos",
+                areas_responsables: ["Departamento de Compras", "Gerencia de Construcción", "Contraloría Interna"],
                 asociado: 15000000.00,
                 observado: 4200150.00, 
                 solventado: 1000000.00,
@@ -797,14 +846,17 @@
                 estado: "En Proceso",
                 rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
             },
-            /* --- 10 NUEVAS AUDITORÍAS FICTICIAS --- */
             { 
                 clave: "AS-2026-FED-03", 
-                entidad: "Salud Pública Gto (Adquisición Medicamentos)", 
+                entidad: "Salud Pública Gto (Medicamentos)", 
                 origen: "Federal", 
+                fiscalizadora: "ASF",
+                jefe_auditoria: "Lic. Fernando Solano Ortiz",
+                fecha_inicio: "2026-02-18",
                 ejercicio: 2025, 
                 responsable: "Dra. Sofía Alcocer",
                 area: "Almacén Central y Farmacología",
+                areas_responsables: ["Dirección de Adquisiciones", "Jefatura de Distribución", "Recursos Financieros"],
                 asociado: 120000000.00,
                 observado: 18500000.00, 
                 solventado: 14000000.00,
@@ -816,9 +868,13 @@
                 clave: "AS-2026-EST-05", 
                 entidad: "Instituto de Pensiones del Estado", 
                 origen: "Estatal", 
+                fiscalizadora: "ASEG",
+                jefe_auditoria: "Mtro. Javier Olvera",
+                fecha_inicio: "2026-05-10",
                 ejercicio: 2025, 
                 responsable: "Lic. Esteban de la Garza",
                 area: "Dirección de Prestaciones y Retiros",
+                areas_responsables: ["Departamento Actuarial", "Nómina de Jubilados", "Dirección Jurídica"],
                 asociado: 95000000.00,
                 observado: 7200000.00, 
                 solventado: 5000000.00,
@@ -830,9 +886,13 @@
                 clave: "AS-2026-FED-04", 
                 entidad: "Obra Pública Municipal Irapuato", 
                 origen: "Federal", 
+                fiscalizadora: "ASF",
+                jefe_auditoria: "Ing. Jorge Villaseñor",
+                fecha_inicio: "2026-03-22",
                 ejercicio: 2025, 
                 responsable: "Ing. Alejandro Torres",
                 area: "Fondo de Aportaciones Municipales",
+                areas_responsables: ["Dirección de Obra", "Supervisión de Contratos", "Finanzas Municipales"],
                 asociado: 45000000.00,
                 observado: 12300000.00, 
                 solventado: 4000000.00,
@@ -842,11 +902,15 @@
             },
             { 
                 clave: "AS-2026-EST-06", 
-                entidad: "Secretaría de Finanzas (Arrendamiento Inmuebles)", 
+                entidad: "Secretaría de Finanzas (Arrendamientos)", 
                 origen: "Estatal", 
+                fiscalizadora: "Sec. Honestidad",
+                jefe_auditoria: "Lic. Beatriz Palacios",
+                fecha_inicio: "2026-01-20",
                 ejercicio: 2024, 
                 responsable: "C.P. Mario G. Domínguez",
                 area: "Servicios Generales y Patrimonio",
+                areas_responsables: ["Control Patrimonial", "Dirección Legal", "Recursos Materiales"],
                 asociado: 28000000.00,
                 observado: 3450000.00, 
                 solventado: 3450000.00,
@@ -858,9 +922,13 @@
                 clave: "AS-2026-FED-05", 
                 entidad: "Seguridad Pública León (Subsidios)", 
                 origen: "Federal", 
+                fiscalizadora: "SFP",
+                jefe_auditoria: "Mtro. Salvador Corona",
+                fecha_inicio: "2026-03-12",
                 ejercicio: 2025, 
                 responsable: "Lic. Hugo Villalobos",
                 area: "Academia Metropolitana de Seguridad",
+                areas_responsables: ["Dirección Administrativa", "Academia de Policía", "Tesorería Municipal"],
                 asociado: 62000000.00,
                 observado: 9800000.00, 
                 solventado: 3200000.00,
@@ -872,9 +940,13 @@
                 clave: "AS-2026-EST-07", 
                 entidad: "Educación del Estado Gto (Nómina)", 
                 origen: "Estatal", 
+                fiscalizadora: "ASEG",
+                jefe_auditoria: "Lic. Gabriela Méndez",
+                fecha_inicio: "2026-05-15",
                 ejercicio: 2025, 
                 responsable: "Mtra. Gabriela Ortega",
                 area: "Recursos Humanos y Nóminas Plazas",
+                areas_responsables: ["Dirección de Personal", "Coordinación de Pagos", "Jurídico de Educación"],
                 asociado: 150000000.00,
                 observado: 34200000.00, 
                 solventado: 21000000.00,
@@ -884,11 +956,15 @@
             },
             { 
                 clave: "AS-2026-FED-06", 
-                entidad: "Medio Ambiente Gto (Programas de Conservación)", 
+                entidad: "Medio Ambiente Gto (Conservación)", 
                 origen: "Federal", 
+                fiscalizadora: "ASF",
+                jefe_auditoria: "Dr. Alberto Cienfuegos",
+                fecha_inicio: "2026-04-02",
                 ejercicio: 2025, 
                 responsable: "Lic. Daniela Montes",
                 area: "Dirección de Recursos Naturales",
+                areas_responsables: ["Unidad de Planeación", "Fideicomiso Ambiental", "Contabilidad Central"],
                 asociado: 22000000.00,
                 observado: 1850000.00, 
                 solventado: 1200000.00,
@@ -898,11 +974,15 @@
             },
             { 
                 clave: "AS-2026-EST-08", 
-                entidad: "DIF Estatal Guanajuato (Adquisición Alimentos)", 
+                entidad: "DIF Estatal Guanajuato (Alimentos)", 
                 origen: "Estatal", 
+                fiscalizadora: "Sec. Honestidad",
+                jefe_auditoria: "C.P. Patricia Ledesma",
+                fecha_inicio: "2026-01-11",
                 ejercicio: 2024, 
                 responsable: "C.P. Ricardo Juárez",
                 area: "Dirección de Asistencia Alimentaria",
+                areas_responsables: ["Coordinación de Almacenes", "Compras Gubernamentales", "Jurídico DIF"],
                 asociado: 41000000.00,
                 observado: 5600000.00, 
                 solventado: 5600000.00,
@@ -914,9 +994,13 @@
                 clave: "AS-2026-FED-07", 
                 entidad: "Comisión Estatal del Agua (CEAG)", 
                 origen: "Federal", 
+                fiscalizadora: "ASF",
+                jefe_auditoria: "Mtro. Ricardo Valenzuela",
+                fecha_inicio: "2026-05-02",
                 ejercicio: 2025, 
                 responsable: "Ing. Fernando Castro",
                 area: "Gerencia de Infraestructura Rural",
+                areas_responsables: ["Dirección de Proyectos", "Supervisión de Licitación", "Finanzas CEAG"],
                 asociado: 75000000.00,
                 observado: 16750000.00, 
                 solventado: 9000000.00,
@@ -926,11 +1010,15 @@
             },
             { 
                 clave: "AS-2026-EST-09", 
-                entidad: "Universidad de Guanajuato (Viáticos y Traslados)", 
+                entidad: "Universidad de Guanajuato (Viáticos)", 
                 origen: "Estatal", 
+                fiscalizadora: "ASEG",
+                jefe_auditoria: "Mtro. Luis Felipe Guerrero",
+                fecha_inicio: "2026-02-27",
                 ejercicio: 2025, 
                 responsable: "Dr. Ernesto Padilla",
                 area: "Coordinación Administrativa y Finanzas",
+                areas_responsables: ["Tesorería Universitaria", "Control Presupuestal", "Contraloría Interna UG"],
                 asociado: 18000000.00,
                 observado: 2100000.00, 
                 solventado: 1800000.00,
@@ -940,32 +1028,61 @@
             }
         ];
 
+        // Mensajes motivacionales institucionales
+        const mensajesMotivacionales = [
+            { titulo: "ÉTICA PROFESIONAL", texto: "La integridad es la piedra angular de nuestro trabajo. Auditar con rigor asegura la correcta aplicación de los recursos públicos en beneficio social." },
+            { titulo: "CONFIANZA PÚBLICA", texto: "Cada observación resuelta fortalece la confianza de la ciudadanía en las instituciones. ¡Sigamos construyendo un ejercicio transparente!" },
+            { titulo: "EXCELENCIA Y LOGRO", texto: "El análisis técnico preciso no solo identifica desviaciones, sino que previene el subejercicio y orienta la mejora continua gubernamental." },
+            { titulo: "VALOR INSTITUCIONAL", texto: "Honestidad, imparcialidad y objetividad. Llevamos con orgullo la responsabilidad de vigilar el patrimonio del Estado." },
+            { titulo: "COMPROMISO SOCIAL", texto: "La fiscalización no es solo revisar números, es garantizar que la infraestructura, los medicamentos y las pensiones lleguen de forma íntegra a la gente." }
+        ];
+
+        let msgIndex = 0;
+
         // Tareas Pendientes para los Post-it
         let tareasPendientes = [
-            {
-                id: "tarea_1",
-                prioridad: "urgente",
-                tag: "Urgente",
-                mensaje: "Atender seguimiento a solventación de la auditoría <strong>AS-2026-FED-01</strong>."
-            },
-            {
-                id: "tarea_2",
-                prioridad: "prioritario",
-                tag: "Prioritario",
-                mensaje: "No olvides enviar la respuesta al requerimiento de información <strong>AECF/0001/ASEG-ISS_004</strong>."
-            },
-            {
-                id: "tarea_3",
-                prioridad: "normal",
-                tag: "Normal",
-                mensaje: "Enviar acuse de respuesta en atención a la auditoría <strong>AS-2026-EST-12</strong>."
-            }
+            { id: "tarea_1", prioridad: "urgente", tag: "Urgente", mensaje: "Atender seguimiento a solventación de la auditoría <strong>AS-2026-FED-01</strong>." },
+            { id: "tarea_2", prioridad: "prioritario", tag: "Prioritario", mensaje: "Enviar respuesta al requerimiento de información <strong>AECF/0001/ASEG-ISS_004</strong>." },
+            { id: "tarea_3", prioridad: "normal", tag: "Normal", mensaje: "Enviar acuse de respuesta en atención a la auditoría <strong>AS-2026-EST-12</strong>." }
         ];
 
         window.onload = function() {
             updateDashboardAndMetrics();
             renderTables();
             renderPostits();
+            
+            // Programación de Mensajes Motivacionales
+            setTimeout(() => {
+                mostrarMensajeMotivacional();
+            }, 15000); // 15 segundos al cargar
+
+            setInterval(() => {
+                mostrarMensajeMotivacional();
+            }, 240000); // Cada 4 minutos (240000 ms)
+        }
+
+        function mostrarMensajeMotivacional() {
+            const container = document.getElementById('toast-container');
+            const msg = mensajesMotivacionales[msgIndex];
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast-motivation';
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <span>🌟 ${msg.titulo}</span>
+                    <button class="toast-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                </div>
+                <div>${msg.texto}</div>
+            `;
+            container.appendChild(toast);
+
+            // Auto-cerrado a los 10 segundos
+            setTimeout(() => {
+                toast.remove();
+            }, 10000);
+
+            // Ciclo de mensajes
+            msgIndex = (msgIndex + 1) % mensajesMotivacionales.length;
         }
 
         function switchPanel(panelId) {
@@ -977,7 +1094,6 @@
         }
 
         function updateDashboardAndMetrics() {
-            // Dashboard Cards
             const total = auditorias.length;
             const federales = auditorias.filter(a => a.origen === 'Federal').length;
             const estatales = auditorias.filter(a => a.origen === 'Estatal').length;
@@ -986,7 +1102,6 @@
             document.getElementById('count-fed').textContent = federales;
             document.getElementById('count-est').textContent = estatales;
 
-            // Totales Financieros para el menú superior
             let totalObservado = 0;
             let totalSolventado = 0;
             let totalReintegrado = 0;
@@ -1022,15 +1137,26 @@
                 const statusClass = aud.estado === 'En Proceso' ? 'proceso' : 'concluido';
                 const porSolventar = aud.observado - aud.solventado - aud.reintegrado;
 
+                // Generar lista de áreas responsables
+                const areasList = aud.areas_responsables.map(area => `<li>${area}</li>`).join('');
+
                 const filaConsulta = `
                     <tr>
                         <td><strong>${aud.clave}</strong></td>
                         <td>${aud.entidad}</td>
                         <td><span class="badge ${badgeOrigen}">${aud.origen}</span></td>
+                        <td><span class="badge-fiscalizadora">${aud.fiscalizadora}</span></td>
+                        <td><strong>${aud.jefe_auditoria}</strong></td>
+                        <td style="white-space: nowrap;">${aud.fecha_inicio}</td>
                         <td>${aud.ejercicio}</td>
                         <td class="meta-cell">
-                            ${aud.responsable}
+                            <strong>${aud.responsable}</strong>
                             <span>${aud.area}</span>
+                        </td>
+                        <td>
+                            <ul class="responsables-list">
+                                ${areasList}
+                            </ul>
                         </td>
                         <td>${formatMoney(aud.asociado)}</td>
                         <td style="color: var(--rojo-urgente); font-weight: 500;">${formatMoney(aud.observado)}</td>
@@ -1045,9 +1171,9 @@
                         </td>
                         <td>
                             <div class="action-cell">
-                                <a href="consultar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-consultar" title="Consultar">🔍 Q</a>
-                                <a href="Editar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-editar" title="Editar">✏️ E</a>
-                                <a href="transferir.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-transferir" title="Transferir">🔄 T</a>
+                                <a href="consultar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-consultar">🔍 Q</a>
+                                <a href="Editar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-editar">✏️ E</a>
+                                <a href="transferir.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-transferir">🔄 T</a>
                             </div>
                         </td>
                     </tr>
@@ -1077,13 +1203,21 @@
         function saveNewAudit(event) {
             event.preventDefault();
 
+            // Transformar la cadena de texto de áreas en un array
+            const areasTexto = document.getElementById('areas_resp').value;
+            const areasArray = areasTexto.split(',').map(item => item.trim()).filter(item => item.length > 0);
+
             const nuevaAud = {
                 clave: document.getElementById('clave').value.trim(),
                 entidad: document.getElementById('entidad').value.trim(),
                 origen: document.getElementById('origen').value,
+                fiscalizadora: document.getElementById('fiscalizadora').value,
+                jefe_auditoria: document.getElementById('jefe_auditoria').value.trim(),
+                fecha_inicio: document.getElementById('fecha_inicio').value,
                 ejercicio: parseInt(document.getElementById('ejercicio').value),
                 responsable: document.getElementById('responsable').value.trim(),
                 area: document.getElementById('area').value.trim(),
+                areas_responsables: areasArray.length > 0 ? areasArray : ["Área Operativa General"],
                 asociado: parseFloat(document.getElementById('m_asociado').value) || 0,
                 observado: parseFloat(document.getElementById('m_observado').value) || 0,
                 solventado: parseFloat(document.getElementById('m_solventado').value) || 0,
@@ -1098,7 +1232,7 @@
             renderTables();
             document.getElementById('auditForm').reset();
 
-            alert('¡Auditoría registrada y estructurada en el ecosistema AUSEFI!');
+            alert('¡Cédula de auditoría registrada de manera exitosa!');
             switchPanel('consultar');
         }
 
@@ -1125,20 +1259,11 @@
                     postitElement.className = 'postit-real';
                     postitElement.id = `postit-${tarea.id}`;
                     postitElement.innerHTML = `
-                        <div class="postit-header">
-                            <span class="tag-priority tag-${tarea.prioridad}">${tarea.tag}</span>
-                            <span style="font-size: 1.1rem; cursor: pointer;" onclick="cerrarTemporalmente('${tarea.id}')" title="Cerrar">×</span>
-                        </div>
                         <div class="postit-body">
                             ${tarea.mensaje}
                         </div>
-                        <div class="postit-actions">
-                            <button class="btn-postit btn-postit-reminder" onclick="recordarEnMinutos('${tarea.id}', 5)">
-                                ⏰ Recordar en 5m
-                            </button>
-                            <button class="btn-postit btn-postit-done" onclick="marcarAtendido('${tarea.id}')">
-                                ✓ Atendido
-                            </button>
+                        <div style="text-align: right;">
+                            <button class="btn-mini btn-consultar" style="background-color: #059669; color: white;" onclick="marcarAtendido('${tarea.id}')">✓ Atendido</button>
                         </div>
                     `;
                     container.appendChild(postitElement);
@@ -1146,33 +1271,9 @@
             });
         }
 
-        function cerrarTemporalmente(id) {
-            const el = document.getElementById(`postit-${id}`);
-            if (el) el.style.display = 'none';
-        }
-
-        function recordarEnMinutos(id, minutos) {
-            sessionStorage.setItem(`postit_snooze_${id}`, 'true');
-            cerrarTemporalmente(id);
-            alert(`Snooze activado. Este post-it volverá a recordarte tu tarea en ${minutos} minutos.`);
-
-            setTimeout(() => {
-                sessionStorage.removeItem(`postit_snooze_${id}`);
-                renderPostits();
-            }, minutos * 60 * 1000);
-        }
-
         function marcarAtendido(id) {
             localStorage.setItem(`postit_done_${id}`, 'true');
-            const el = document.getElementById(`postit-${id}`);
-            if (el) {
-                el.style.transform = 'scale(0.8) rotate(10deg)';
-                el.style.opacity = '0';
-                setTimeout(() => {
-                    renderPostits();
-                }, 300);
-            }
-            alert("Excelente. La tarea ha sido marcada como atendida de manera definitiva.");
+            renderPostits();
         }
     </script>
 </body>
