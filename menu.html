@@ -41,12 +41,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
-            height: 70px;
+            padding: 0 1.5rem;
+            height: auto;
+            min-height: 75px;
             position: sticky;
             top: 0;
             z-index: 999;
             border-bottom: 3px solid var(--azul-principal);
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .navbar-brand {
@@ -56,14 +59,14 @@
         }
 
         .navbar-brand h2 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             letter-spacing: 2px;
             font-weight: 800;
             color: var(--blanco);
         }
 
         .navbar-brand span {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             background-color: var(--azul-principal);
             border: 1px solid var(--azul-brillante);
             padding: 3px 8px;
@@ -71,10 +74,37 @@
             font-weight: bold;
         }
 
+        /* Indicadores financieros en menú */
+        .nav-financial-metrics {
+            display: flex;
+            gap: 1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-financial-item {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .nav-financial-item span.label {
+            color: #94A3B8;
+            font-weight: 600;
+        }
+
+        .nav-financial-item span.amount {
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 1.5rem;
+            gap: 1rem;
             height: 100%;
             align-items: center;
         }
@@ -83,8 +113,8 @@
             color: #94A3B8;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
-            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.8rem;
             border-radius: 6px;
             transition: all 0.3s ease;
         }
@@ -99,7 +129,7 @@
             align-items: center;
             gap: 10px;
             border-left: 1px solid rgba(255,255,255,0.2);
-            padding-left: 1.5rem;
+            padding-left: 1rem;
         }
 
         .user-info {
@@ -108,18 +138,18 @@
 
         .user-name {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--blanco);
         }
 
         .user-role {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--azul-brillante);
         }
 
         /* --- CONTENEDOR PRINCIPAL --- */
         .main-container {
-            max-width: 1600px;
+            max-width: 1750px;
             margin: 2rem auto;
             padding: 0 1.5rem;
             display: flex;
@@ -181,7 +211,7 @@
         .icon-fed { background-color: rgba(16, 185, 129, 0.1); color: var(--verde-exito); }
         .icon-est { background-color: rgba(245, 158, 11, 0.1); color: var(--naranja-alerta); }
 
-        /* --- SECCIONES ILUMINADAS CON LUZ NEÓN AZUL TENUE --- */
+        /* --- SECCIONES ILUMINADAS CON LUZ NEÓN --- */
         .section-panel {
             background-color: var(--blanco);
             border-radius: 12px;
@@ -192,7 +222,6 @@
             display: none;
         }
 
-        /* Efecto de borde con iluminación neón azul tenue */
         .section-panel.active-panel {
             display: block;
             border-color: var(--azul-brillante);
@@ -247,21 +276,21 @@
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             background-color: var(--blanco);
         }
 
         th {
             background-color: var(--azul-tenue);
             color: var(--azul-principal);
-            padding: 12px;
+            padding: 12px 10px;
             font-weight: 700;
             border-bottom: 2px solid var(--borde);
             white-space: nowrap;
         }
 
         td {
-            padding: 12px;
+            padding: 12px 10px;
             border-bottom: 1px solid var(--borde);
             color: var(--texto-oscuro);
             vertical-align: middle;
@@ -274,7 +303,7 @@
         .badge {
             padding: 3px 6px;
             border-radius: 8px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
             text-transform: uppercase;
         }
@@ -286,16 +315,27 @@
         .badge-status.concluido { background-color: rgba(16, 185, 129, 0.1); color: var(--verde-exito); border: 1px solid var(--verde-exito); }
 
         .rubro-cell {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--texto-mutado);
             line-height: 1.3;
-            max-width: 180px;
+            max-width: 160px;
+        }
+
+        .meta-cell {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .meta-cell span {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--texto-mutado);
         }
 
         /* --- BOTONES DE ACCIÓN --- */
         .action-cell {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             white-space: nowrap;
         }
 
@@ -303,10 +343,10 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            padding: 5px 8px;
+            gap: 2px;
+            padding: 4px 6px;
             border-radius: 4px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: bold;
             cursor: pointer;
             border: 1px solid transparent;
@@ -327,7 +367,7 @@
             background-color: var(--azul-tenue);
             color: var(--azul-principal);
             border: 1px solid var(--borde);
-            padding: 4px;
+            padding: 3px;
             border-radius: 4px;
             display: inline-flex;
             align-items: center;
@@ -339,7 +379,7 @@
             color: var(--blanco);
         }
 
-        /* --- CONTENEDOR SUPERPUESTO DE POST-IT INDEPENDIENTES --- */
+        /* --- POST-ITS SUPERPUESTOS --- */
         .postit-overlay-container {
             position: fixed;
             bottom: 20px;
@@ -349,13 +389,12 @@
             flex-direction: column;
             gap: 15px;
             align-items: flex-end;
-            pointer-events: none; /* Deja pasar clicks de fondo excepto en los post-it */
+            pointer-events: none;
         }
 
-        /* ASPECTO REALISTA DE POST-IT INDIVIDAL */
         .postit-real {
-            pointer-events: auto; /* Reactivar clicks */
-            width: 280px;
+            pointer-events: auto;
+            width: 290px;
             background: linear-gradient(135deg, #ffffcc 0%, #fefe96 100%);
             color: #33301C;
             padding: 18px;
@@ -364,7 +403,7 @@
             transform: rotate(-1.5deg);
             transition: all 0.3s ease;
             border-left: 4px solid #FBC02D;
-            border-bottom-right-radius: 40px 10px; /* Curvatura tipo papel real */
+            border-bottom-right-radius: 40px 10px;
         }
 
         .postit-real:nth-child(even) {
@@ -372,7 +411,6 @@
             background: linear-gradient(135deg, #fffae0 0%, #fdf5b7 100%);
         }
 
-        /* Cabezal tipo cinta adhesiva translúcida */
         .postit-real::before {
             content: "";
             position: absolute;
@@ -413,7 +451,6 @@
             font-weight: 500;
         }
 
-        /* Panel de opciones interactivas */
         .postit-actions {
             display: flex;
             justify-content: space-between;
@@ -506,11 +543,27 @@
 </head>
 <body>
 
-    <!-- NAVBAR SUPERIOR -->
+    <!-- NAVBAR SUPERIOR INTERACTIVO -->
     <nav class="navbar">
         <div class="navbar-brand">
             <h2>AUSEFI</h2>
             <span>SISTEMA AUDITOR</span>
+        </div>
+
+        <!-- Indicadores Financieros Globales Solicitados -->
+        <div class="nav-financial-metrics">
+            <div class="nav-financial-item">
+                <span class="label">OBSERVADO</span>
+                <span class="amount" id="nav-total-obs" style="color: #FDA4AF;">$0.00</span>
+            </div>
+            <div class="nav-financial-item" style="border-left: 1px solid rgba(255,255,255,0.2); padding-left: 8px;">
+                <span class="label">SOLVENTADO</span>
+                <span class="amount" id="nav-total-sol" style="color: #6EE7B7;">$0.00</span>
+            </div>
+            <div class="nav-financial-item" style="border-left: 1px solid rgba(255,255,255,0.2); padding-left: 8px;">
+                <span class="label">PENDIENTE</span>
+                <span class="amount" id="nav-total-pend" style="color: #FCA5A5;">$0.00</span>
+            </div>
         </div>
         
         <ul class="nav-menu">
@@ -527,10 +580,8 @@
         </div>
     </nav>
 
-    <!-- CONTENEDOR DE CAPA SUPERPUESTA DE POST-ITS -->
-    <div class="postit-overlay-container" id="postit-container">
-        <!-- Renderizados dinámicamente mediante JavaScript interactivo -->
-    </div>
+    <!-- CAPA SUPERPUESTA DE POST-ITS -->
+    <div class="postit-overlay-container" id="postit-container"></div>
 
     <div class="main-container">
 
@@ -562,7 +613,7 @@
         <!-- 1. PANEL: CONSULTAR AUDITORÍAS -->
         <section id="panel-consultar" class="section-panel active-panel">
             <div class="panel-header">
-                <h2 class="panel-title">Bandeja de Auditorías Fiscales</h2>
+                <h2 class="panel-title">Bandeja de Auditorías </h2>
                 <div class="table-filters">
                     <label for="filter-origen">Filtrar:</label>
                     <select id="filter-origen" onchange="applyFilters()">
@@ -581,6 +632,7 @@
                             <th>Entidad</th>
                             <th>Origen</th>
                             <th>Ejercicio</th>
+                            <th>Responsable / Área</th>
                             <th>Monto Asociado</th>
                             <th>Monto Observado</th>
                             <th>Monto Solventado</th>
@@ -622,6 +674,14 @@
                     <div class="form-group">
                         <label for="ejercicio">Ejercicio Fiscal:</label>
                         <input type="number" id="ejercicio" required min="2020" max="2027" value="2026">
+                    </div>
+                    <div class="form-group">
+                        <label for="responsable">Auditor Responsable:</label>
+                        <input type="text" id="responsable" required placeholder="Ej: Lic. Carlos Mendoza">
+                    </div>
+                    <div class="form-group">
+                        <label for="area">Área Involucrada:</label>
+                        <input type="text" id="area" required placeholder="Ej: Dirección de Obra Pública">
                     </div>
                     <div class="form-group">
                         <label for="m_asociado">Monto Asociado (MXN):</label>
@@ -679,13 +739,15 @@
     </div>
 
     <script>
-        // Datos de ejemplo
+        // BASE DE DATOS LOCAL AMPLIADA CON 14 AUDITORÍAS (4 ORIGINALES + 10 NUEVAS SOLICITADAS)
         let auditorias = [
             { 
                 clave: "AS-2026-FED-01", 
                 entidad: "San Miguel de Allende (FISMDF)", 
                 origen: "Federal", 
                 ejercicio: 2025, 
+                responsable: "Lic. Clara Belmonte",
+                area: "Desarrollo Social y Humano",
                 asociado: 50000000.00,
                 observado: 14250000.00, 
                 solventado: 8000000.00,
@@ -698,6 +760,8 @@
                 entidad: "Secretaría de Obra Pública Gto", 
                 origen: "Estatal", 
                 ejercicio: 2025, 
+                responsable: "Ing. Roberto Esquivel",
+                area: "Dirección de Infraestructura Vial",
                 asociado: 35000000.00,
                 observado: 8540300.50, 
                 solventado: 8540300.50,
@@ -710,6 +774,8 @@
                 entidad: "Municipio de Celaya (FORTAMUN)", 
                 origen: "Federal", 
                 ejercicio: 2024, 
+                responsable: "C.P. Sergio Valdivia",
+                area: "Tesorería y Finanzas",
                 asociado: 80000000.00,
                 observado: 23110200.00, 
                 solventado: 12000000.00,
@@ -722,16 +788,159 @@
                 entidad: "SAPAL León (Infraestructura)", 
                 origen: "Estatal", 
                 ejercicio: 2025, 
+                responsable: "Lic. Diana Paulina Ruiz",
+                area: "Proyectos Hídricos",
                 asociado: 15000000.00,
                 observado: 4200150.00, 
                 solventado: 1000000.00,
                 reintegrado: 500000.00,
                 estado: "En Proceso",
                 rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            /* --- 10 NUEVAS AUDITORÍAS FICTICIAS --- */
+            { 
+                clave: "AS-2026-FED-03", 
+                entidad: "Salud Pública Gto (Adquisición Medicamentos)", 
+                origen: "Federal", 
+                ejercicio: 2025, 
+                responsable: "Dra. Sofía Alcocer",
+                area: "Almacén Central y Farmacología",
+                asociado: 120000000.00,
+                observado: 18500000.00, 
+                solventado: 14000000.00,
+                reintegrado: 500000.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-EST-05", 
+                entidad: "Instituto de Pensiones del Estado", 
+                origen: "Estatal", 
+                ejercicio: 2025, 
+                responsable: "Lic. Esteban de la Garza",
+                area: "Dirección de Prestaciones y Retiros",
+                asociado: 95000000.00,
+                observado: 7200000.00, 
+                solventado: 5000000.00,
+                reintegrado: 200000.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-FED-04", 
+                entidad: "Obra Pública Municipal Irapuato", 
+                origen: "Federal", 
+                ejercicio: 2025, 
+                responsable: "Ing. Alejandro Torres",
+                area: "Fondo de Aportaciones Municipales",
+                asociado: 45000000.00,
+                observado: 12300000.00, 
+                solventado: 4000000.00,
+                reintegrado: 1000000.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-EST-06", 
+                entidad: "Secretaría de Finanzas (Arrendamiento Inmuebles)", 
+                origen: "Estatal", 
+                ejercicio: 2024, 
+                responsable: "C.P. Mario G. Domínguez",
+                area: "Servicios Generales y Patrimonio",
+                asociado: 28000000.00,
+                observado: 3450000.00, 
+                solventado: 3450000.00,
+                reintegrado: 0.00,
+                estado: "Concluido",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-FED-05", 
+                entidad: "Seguridad Pública León (Subsidios)", 
+                origen: "Federal", 
+                ejercicio: 2025, 
+                responsable: "Lic. Hugo Villalobos",
+                area: "Academia Metropolitana de Seguridad",
+                asociado: 62000000.00,
+                observado: 9800000.00, 
+                solventado: 3200000.00,
+                reintegrado: 1500000.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-EST-07", 
+                entidad: "Educación del Estado Gto (Nómina)", 
+                origen: "Estatal", 
+                ejercicio: 2025, 
+                responsable: "Mtra. Gabriela Ortega",
+                area: "Recursos Humanos y Nóminas Plazas",
+                asociado: 150000000.00,
+                observado: 34200000.00, 
+                solventado: 21000000.00,
+                reintegrado: 4200000.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-FED-06", 
+                entidad: "Medio Ambiente Gto (Programas de Conservación)", 
+                origen: "Federal", 
+                ejercicio: 2025, 
+                responsable: "Lic. Daniela Montes",
+                area: "Dirección de Recursos Naturales",
+                asociado: 22000000.00,
+                observado: 1850000.00, 
+                solventado: 1200000.00,
+                reintegrado: 150000.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-EST-08", 
+                entidad: "DIF Estatal Guanajuato (Adquisición Alimentos)", 
+                origen: "Estatal", 
+                ejercicio: 2024, 
+                responsable: "C.P. Ricardo Juárez",
+                area: "Dirección de Asistencia Alimentaria",
+                asociado: 41000000.00,
+                observado: 5600000.00, 
+                solventado: 5600000.00,
+                reintegrado: 0.00,
+                estado: "Concluido",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-FED-07", 
+                entidad: "Comisión Estatal del Agua (CEAG)", 
+                origen: "Federal", 
+                ejercicio: 2025, 
+                responsable: "Ing. Fernando Castro",
+                area: "Gerencia de Infraestructura Rural",
+                asociado: 75000000.00,
+                observado: 16750000.00, 
+                solventado: 9000000.00,
+                reintegrado: 2200000.00,
+                estado: "En Proceso",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
+            },
+            { 
+                clave: "AS-2026-EST-09", 
+                entidad: "Universidad de Guanajuato (Viáticos y Traslados)", 
+                origen: "Estatal", 
+                ejercicio: 2025, 
+                responsable: "Dr. Ernesto Padilla",
+                area: "Coordinación Administrativa y Finanzas",
+                asociado: 18000000.00,
+                observado: 2100000.00, 
+                solventado: 1800000.00,
+                reintegrado: 300000.00,
+                estado: "Concluido",
+                rubros: "Servicios Gral: 30% | Nómina: 40% | Subejerc.: 15% | Inv. Pública: 10% | Otros: 5%"
             }
         ];
 
-        // Definición de las tareas de los Post-it
+        // Tareas Pendientes para los Post-it
         let tareasPendientes = [
             {
                 id: "tarea_1",
@@ -754,7 +963,7 @@
         ];
 
         window.onload = function() {
-            updateDashboard();
+            updateDashboardAndMetrics();
             renderTables();
             renderPostits();
         }
@@ -767,7 +976,8 @@
             document.getElementById(`panel-${panelId}`).classList.add('active-panel');
         }
 
-        function updateDashboard() {
+        function updateDashboardAndMetrics() {
+            // Dashboard Cards
             const total = auditorias.length;
             const federales = auditorias.filter(a => a.origen === 'Federal').length;
             const estatales = auditorias.filter(a => a.origen === 'Estatal').length;
@@ -775,6 +985,23 @@
             document.getElementById('count-total').textContent = total;
             document.getElementById('count-fed').textContent = federales;
             document.getElementById('count-est').textContent = estatales;
+
+            // Totales Financieros para el menú superior
+            let totalObservado = 0;
+            let totalSolventado = 0;
+            let totalReintegrado = 0;
+
+            auditorias.forEach(a => {
+                totalObservado += a.observado;
+                totalSolventado += a.solventado;
+                totalReintegrado += a.reintegrado;
+            });
+
+            const totalPendiente = totalObservado - totalSolventado - totalReintegrado;
+
+            document.getElementById('nav-total-obs').textContent = formatMoney(totalObservado);
+            document.getElementById('nav-total-sol').textContent = formatMoney(totalSolventado);
+            document.getElementById('nav-total-pend').textContent = formatMoney(totalPendiente);
         }
 
         function formatMoney(amount) {
@@ -801,6 +1028,10 @@
                         <td>${aud.entidad}</td>
                         <td><span class="badge ${badgeOrigen}">${aud.origen}</span></td>
                         <td>${aud.ejercicio}</td>
+                        <td class="meta-cell">
+                            ${aud.responsable}
+                            <span>${aud.area}</span>
+                        </td>
                         <td>${formatMoney(aud.asociado)}</td>
                         <td style="color: var(--rojo-urgente); font-weight: 500;">${formatMoney(aud.observado)}</td>
                         <td style="color: var(--verde-exito); font-weight: 500;">${formatMoney(aud.solventado)}</td>
@@ -809,20 +1040,14 @@
                         <td class="rubro-cell">
                             ${aud.rubros}
                             <a href="graficosdefin.html?clave=${encodeURIComponent(aud.clave)}" class="btn-grafico" title="Ver Gráficos">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                             </a>
                         </td>
                         <td>
                             <div class="action-cell">
-                                <a href="consultar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-consultar" title="Consultar">
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg> Q
-                                </a>
-                                <a href="Editar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-editar" title="Editar">
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> E
-                                </a>
-                                <a href="transferir.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-transferir" title="Transferir">
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg> T
-                                </a>
+                                <a href="consultar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-consultar" title="Consultar">🔍 Q</a>
+                                <a href="Editar.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-editar" title="Editar">✏️ E</a>
+                                <a href="transferir.html?clave=${encodeURIComponent(aud.clave)}" class="btn-mini btn-transferir" title="Transferir">🔄 T</a>
                             </div>
                         </td>
                     </tr>
@@ -857,6 +1082,8 @@
                 entidad: document.getElementById('entidad').value.trim(),
                 origen: document.getElementById('origen').value,
                 ejercicio: parseInt(document.getElementById('ejercicio').value),
+                responsable: document.getElementById('responsable').value.trim(),
+                area: document.getElementById('area').value.trim(),
                 asociado: parseFloat(document.getElementById('m_asociado').value) || 0,
                 observado: parseFloat(document.getElementById('m_observado').value) || 0,
                 solventado: parseFloat(document.getElementById('m_solventado').value) || 0,
@@ -867,11 +1094,11 @@
 
             auditorias.push(nuevaAud);
 
-            updateDashboard();
+            updateDashboardAndMetrics();
             renderTables();
             document.getElementById('auditForm').reset();
 
-            alert('¡Auditoría registrada de manera exitosa en el ecosistema AUSEFI!');
+            alert('¡Auditoría registrada y estructurada en el ecosistema AUSEFI!');
             switchPanel('consultar');
         }
 
@@ -880,19 +1107,17 @@
             auditorias[index].estado = actual === 'En Proceso' ? 'Concluido' : 'En Proceso';
             
             renderTables();
-            updateDashboard();
+            updateDashboardAndMetrics();
             alert(`Fase actualizada a "${auditorias[index].estado}" para la auditoría: ${auditorias[index].clave}`);
         }
 
-        /* --- LÓGICA DE INTERACTIVIDAD DE LOS POST-IT --- */
+        /* --- CONTROL DE LOS POST-ITS INTERACTIVOS --- */
         function renderPostits() {
             const container = document.getElementById('postit-container');
             container.innerHTML = '';
 
             tareasPendientes.forEach(tarea => {
-                // Verificar si la tarea ha sido marcada como atendida permanentemente
                 const atendida = localStorage.getItem(`postit_done_${tarea.id}`);
-                // Verificar si la tarea está actualmente silenciada (temporizador activo)
                 const silenciada = sessionStorage.getItem(`postit_snooze_${tarea.id}`);
 
                 if (!atendida && !silenciada) {
@@ -927,20 +1152,17 @@
         }
 
         function recordarEnMinutos(id, minutos) {
-            // Guardamos temporalmente el snooze en sessionStorage
             sessionStorage.setItem(`postit_snooze_${id}`, 'true');
             cerrarTemporalmente(id);
-            alert(`Se programó un recordatorio. El Post-it reaparecerá en ${minutos} minutos.`);
+            alert(`Snooze activado. Este post-it volverá a recordarte tu tarea en ${minutos} minutos.`);
 
-            // Lanzamos el timer para volver a mostrarlo
             setTimeout(() => {
                 sessionStorage.removeItem(`postit_snooze_${id}`);
                 renderPostits();
-            }, minutos * 60 * 1000); // 5 minutos expresados en milisegundos
+            }, minutos * 60 * 1000);
         }
 
         function marcarAtendido(id) {
-            // Guardamos permanentemente en localStorage para que no se vuelva a renderizar
             localStorage.setItem(`postit_done_${id}`, 'true');
             const el = document.getElementById(`postit-${id}`);
             if (el) {
@@ -950,7 +1172,7 @@
                     renderPostits();
                 }, 300);
             }
-            alert("¡Tarea dada por atendida! El recordatorio ha sido archivado.");
+            alert("Excelente. La tarea ha sido marcada como atendida de manera definitiva.");
         }
     </script>
 </body>
